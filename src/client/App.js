@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./app.css";
 import DragAndDropComponent from "./components/DragAndDropComponent";
 import LogInComponent from "./components/LogInComponent";
+import LogOutComponent from "./components/LogOutComponent";
 
 export default class App extends Component {
   state = { profileObj: null, lists: null };
@@ -27,7 +28,7 @@ export default class App extends Component {
     sessionStorage.setItem("profileObj", JSON.stringify(this.state.profileObj));
   };
 
-  responseGoogle = (response) => {
+  responseGoogleLogin = (response) => {
     console.log(response);
     console.log(response.profileObj);
 
@@ -37,6 +38,10 @@ export default class App extends Component {
       this.setState({ profileObj });
       this.fetchData(email);
     }
+  };
+
+  responseGoogleLogout = (response) => {
+    this.setState({ profileObj: null });
   };
 
   fetchData = (email) => {
@@ -61,9 +66,12 @@ export default class App extends Component {
         )}
 
         {this.state.profileObj ? (
-          <DragAndDropComponent />
+          <div>
+            <DragAndDropComponent />
+            <LogOutComponent responseGoogleLogout={this.responseGoogleLogout} />
+          </div>
         ) : (
-          <LogInComponent responseGoogle={this.responseGoogle} />
+          <LogInComponent responseGoogleLogin={this.responseGoogleLogin} />
         )}
       </div>
     );

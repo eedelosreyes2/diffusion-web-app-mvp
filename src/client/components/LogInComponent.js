@@ -8,8 +8,8 @@ export class LogInComponent extends Component {
         <GoogleLogin
           clientId="173875502237-vqno633dqovkrmnot06va4r1iu0m2882.apps.googleusercontent.com"
           buttonText="Login"
-          onSuccess={this.props.responseGoogle}
-          onFailure={this.props.responseGoogle}
+          onSuccess={this.props.responseGoogleLogin}
+          onFailure={this.props.responseGoogleLogin}
           cookiePolicy={"single_host_origin"}
         />
       </div>
