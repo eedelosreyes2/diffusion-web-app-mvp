@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./app.css";
 import ReactImage from "./react.png";
 import DragAndDropComponent from "./components/DragAndDropComponent";
+import LogInComponent from "./components/LogInComponent";
 
 export default class App extends Component {
   state = { isLoggedIn: false, username: null, lists: null };
@@ -22,7 +23,7 @@ export default class App extends Component {
 
     // if not logged in -> return false
 
-    return true;
+    return false;
   };
 
   fetchData = () => {
@@ -44,7 +45,7 @@ export default class App extends Component {
           <h1>Loading.. please wait!</h1>
         )}
         */}
-        {this.state.isLoggedIn ? <DragAndDropComponent /> : ""}
+        {this.state.isLoggedIn ? <DragAndDropComponent /> : <LogInComponent />}
       </div>
     );
   }
