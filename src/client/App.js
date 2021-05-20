@@ -1,51 +1,70 @@
 import React, { Component } from "react";
 import "./app.css";
-import ReactImage from "./react.png";
 import DragAndDropComponent from "./components/DragAndDropComponent";
 import LogInComponent from "./components/LogInComponent";
 
 export default class App extends Component {
-  state = { isLoggedIn: false, username: null, lists: null };
+  state = { profileObj: null, lists: null };
 
-  componentDidMount() {
-    if (this.isLoggedIn()) {
-      this.setState({ isLoggedIn: true });
-      this.fetchData();
-    } else {
-      this.setState({ isLoggedIn: false });
-    }
-  }
-
-  isLoggedIn = () => {
-    // fetch user logged in info from browser data
-
-    // if logged in -> set username, return true
-
-    // if not logged in -> return false
-
-    return false;
+  componentDidMount = () => {
+    this.getProfileObj();
+    window.addEventListener("load", this.getProfileObj);
+    window.addEventListener("beforeunload", this.setProfileObj);
   };
 
-  fetchData = () => {
-    fetch("/api/getUsername")
-      .then((res) => res.json())
-      .then((user) => this.setState({ username: user.username }));
-    fetch("/api/getLists")
-      .then((res) => res.json())
-      .then((user) => this.setState({ username: user.username }));
+  componentWillUnmount = () => {
+    this.setProfileObj();
+    window.removeEventListener("load", this.getProfileObj);
+    window.removeEventListener("beforeunload", this.setProfileObj);
+  };
+
+  getProfileObj = () => {
+    const profileObj = JSON.parse(sessionStorage.getItem("profileObj"));
+    if (profileObj) this.setState({ profileObj });
+  };
+
+  setProfileObj = () => {
+    sessionStorage.setItem("profileObj", JSON.stringify(this.state.profileObj));
+  };
+
+  responseGoogle = (response) => {
+    console.log(response);
+    console.log(response.profileObj);
+
+    if (response.profileObj) {
+      const profileObj = response.profileObj;
+      const email = profileObj.email;
+      this.setState({ profileObj });
+      this.fetchData(email);
+    }
+  };
+
+  fetchData = (email) => {
+    // fetch("/api/getUsername")
+    //   .then((res) => res.json())
+    //   .then((user) => this.setState({ username: user.username }));
+    // fetch("/api/getLists")
+    //   .then((res) => res.json())
+    //   .then((lists) => this.setState({ lists }));
+    console.log("fetched data for " + email);
   };
 
   render() {
-    const { username } = this.state;
+    const profileObj = this.state.profileObj;
+
     return (
       <div>
-        {/* {username ? (
-          <h1>{`Hello ${username}`}</h1>
+        {profileObj ? (
+          <h1>{`Hello ${profileObj.givenName} ${profileObj.familyName}!`}</h1>
         ) : (
-          <h1>Loading.. please wait!</h1>
+          <h1>Please login!</h1>
         )}
-        */}
-        {this.state.isLoggedIn ? <DragAndDropComponent /> : <LogInComponent />}
+
+        {this.state.profileObj ? (
+          <DragAndDropComponent />
+        ) : (
+          <LogInComponent responseGoogle={this.responseGoogle} />
+        )}
       </div>
     );
   }
