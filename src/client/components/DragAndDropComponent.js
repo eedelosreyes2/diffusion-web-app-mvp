@@ -52,8 +52,10 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 
 const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? "lightblue" : "lightgrey",
+  display: "inline-block",
   padding: grid,
   width: 250,
+  verticalAlign: "top",
 });
 
 export default class DragAndDropComponent extends Component {
