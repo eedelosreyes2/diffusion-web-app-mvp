@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import "./app.css";
+import axios from "axios";
 import DragAndDropComponent from "./components/DragAndDropComponent";
 import LogInComponent from "./components/LogInComponent";
 import LogOutComponent from "./components/LogOutComponent";
+import "./app.css";
 
 export default class App extends Component {
   state = { profileObj: null, lists: null };
@@ -21,7 +22,10 @@ export default class App extends Component {
 
   getProfileObj = () => {
     const profileObj = JSON.parse(sessionStorage.getItem("profileObj"));
-    if (profileObj) this.setState({ profileObj });
+    if (profileObj) {
+      this.setState({ profileObj });
+      this.fetchData(profileObj.email);
+    }
   };
 
   setProfileObj = () => {
@@ -29,9 +33,6 @@ export default class App extends Component {
   };
 
   responseGoogleLogin = (response) => {
-    console.log(response);
-    console.log(response.profileObj);
-
     if (response.profileObj) {
       const profileObj = response.profileObj;
       const email = profileObj.email;
@@ -45,13 +46,10 @@ export default class App extends Component {
   };
 
   fetchData = (email) => {
-    // fetch("/api/getUsername")
-    //   .then((res) => res.json())
-    //   .then((user) => this.setState({ username: user.username }));
-    // fetch("/api/getLists")
-    //   .then((res) => res.json())
-    //   .then((lists) => this.setState({ lists }));
-    console.log("fetched data for " + email);
+    axios.get("/api/getLists").then((res) => {
+      const lists = res.data;
+      this.setState({ lists });
+    });
   };
 
   render() {
@@ -67,7 +65,7 @@ export default class App extends Component {
 
         {this.state.profileObj ? (
           <div>
-            <DragAndDropComponent />
+            <DragAndDropComponent lists={this.state.lists} />
             <LogOutComponent responseGoogleLogout={this.responseGoogleLogout} />
           </div>
         ) : (

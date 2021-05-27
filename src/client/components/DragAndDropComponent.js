@@ -74,6 +74,13 @@ export default class DragAndDropComponent extends Component {
     droppable2: "selected",
   };
 
+  componentDidUpdate(prevProps) {
+    if (this.props.lists !== prevProps.lists) {
+      console.log(this.props.lists);
+      this.setState({ lists: this.props.lists });
+    }
+  }
+
   getList = (id) => this.state[this.id2List[id]];
 
   onDragEnd = (result) => {
