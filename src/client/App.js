@@ -45,9 +45,9 @@ export default class App extends Component {
     this.setState({ profileObj: null });
   };
 
-  fetchData = (email) => {
+  fetchData = async (email) => {
     axios.get("/api/getLists").then((res) => {
-      const lists = res.data;
+      const { lists } = res.data;
       this.setState({ lists });
     });
   };

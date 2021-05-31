@@ -1,194 +1,4 @@
-// import React, { Component } from "react";
-// import ReactDOM from "react-dom";
-// import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
-// // fake data generator
-// const getItems = (count, offset = 0) =>
-//   Array.from({ length: count }, (v, k) => k).map((k) => ({
-//     id: `item-${k + offset}`,
-//     content: `item ${k + offset}`,
-//   }));
-
-// // a little function to help us with reordering the result
-// const reorder = (list, startIndex, endIndex) => {
-//   const result = Array.from(list);
-//   const [removed] = result.splice(startIndex, 1);
-//   result.splice(endIndex, 0, removed);
-
-//   return result;
-// };
-
-// /**
-//  * Moves an item from one list to another list.
-//  */
-// const move = (source, destination, droppableSource, droppableDestination) => {
-//   const sourceClone = Array.from(source);
-//   const destClone = Array.from(destination);
-//   const [removed] = sourceClone.splice(droppableSource.index, 1);
-
-//   destClone.splice(droppableDestination.index, 0, removed);
-
-//   const result = {};
-//   result[droppableSource.droppableId] = sourceClone;
-//   result[droppableDestination.droppableId] = destClone;
-
-//   return result;
-// };
-
-// const grid = 8;
-
-// const getItemStyle = (isDragging, draggableStyle) => ({
-//   // some basic styles to make the items look a bit nicer
-//   userSelect: "none",
-//   padding: grid * 2,
-//   margin: `0 0 ${grid}px 0`,
-
-//   // change background colour if dragging
-//   background: isDragging ? "lightgreen" : "grey",
-
-//   // styles we need to apply on draggables
-//   ...draggableStyle,
-// });
-
-// const getListStyle = (isDraggingOver) => ({
-//   background: isDraggingOver ? "lightblue" : "lightgrey",
-//   display: "inline-block",
-//   padding: grid,
-//   width: 250,
-//   verticalAlign: "top",
-// });
-
-// export default class DragAndDropComponent extends Component {
-//   state = {
-//     lists: [],
-//     items: getItems(10),
-//     selected: getItems(5, 10),
-//   };
-
-//   /**
-//    * A semi-generic way to handle multiple lists. Matches
-//    * the IDs of the droppable container to the names of the
-//    * source arrays stored in the state.
-//    */
-//   id2List = {
-//     droppable: "items",
-//     droppable2: "selected",
-//   };
-
-//   componentDidUpdate(prevProps) {
-//     if (this.props.lists !== prevProps.lists) {
-//       console.log(this.props.lists);
-//       this.setState({ lists: this.props.lists });
-//     }
-//   }
-
-//   getList = (id) => this.state[this.id2List[id]];
-
-//   onDragEnd = (result) => {
-//     const { source, destination } = result;
-
-//     // dropped outside the list
-//     if (!destination) {
-//       return;
-//     }
-
-//     if (source.droppableId === destination.droppableId) {
-//       const items = reorder(
-//         this.getList(source.droppableId),
-//         source.index,
-//         destination.index
-//       );
-
-//       let state = { items };
-
-//       if (source.droppableId === "droppable2") {
-//         state = { selected: items };
-//       }
-
-//       this.setState(state);
-//     } else {
-//       const result = move(
-//         this.getList(source.droppableId),
-//         this.getList(destination.droppableId),
-//         source,
-//         destination
-//       );
-
-//       this.setState({
-//         items: result.droppable,
-//         selected: result.droppable2,
-//       });
-//     }
-//   };
-
-//   // Normally you would want to split things out into separate components.
-//   // But in this example everything is just done in one place for simplicity
-//   render() {
-//     return (
-//       <DragDropContext onDragEnd={this.onDragEnd}>
-//         <Droppable droppableId="droppable">
-//           {(provided, snapshot) => (
-//             <div
-//               ref={provided.innerRef}
-//               style={getListStyle(snapshot.isDraggingOver)}
-//             >
-//               {this.state.items.map((item, index) => (
-//                 <Draggable key={item.id} draggableId={item.id} index={index}>
-//                   {(provided, snapshot) => (
-//                     <div
-//                       ref={provided.innerRef}
-//                       {...provided.draggableProps}
-//                       {...provided.dragHandleProps}
-//                       style={getItemStyle(
-//                         snapshot.isDragging,
-//                         provided.draggableProps.style
-//                       )}
-//                     >
-//                       {item.content}
-//                     </div>
-//                   )}
-//                 </Draggable>
-//               ))}
-//               {provided.placeholder}
-//             </div>
-//           )}
-//         </Droppable>
-//         <Droppable droppableId="droppable2">
-//           {(provided, snapshot) => (
-//             <div
-//               ref={provided.innerRef}
-//               style={getListStyle(snapshot.isDraggingOver)}
-//             >
-//               {this.state.selected.map((item, index) => (
-//                 <Draggable key={item.id} draggableId={item.id} index={index}>
-//                   {(provided, snapshot) => (
-//                     <div
-//                       ref={provided.innerRef}
-//                       {...provided.draggableProps}
-//                       {...provided.dragHandleProps}
-//                       style={getItemStyle(
-//                         snapshot.isDragging,
-//                         provided.draggableProps.style
-//                       )}
-//                     >
-//                       {item.content}
-//                     </div>
-//                   )}
-//                 </Draggable>
-//               ))}
-//               {provided.placeholder}
-//             </div>
-//           )}
-//         </Droppable>
-//       </DragDropContext>
-//     );
-//   }
-// }
-
-// // Put the things into the DOM!
-// ReactDOM.render(<DragAndDropComponent />, document.getElementById("root"));
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import uuid from "uuid/v4";
 
@@ -265,14 +75,63 @@ const onDragEnd = (result, columns, setColumns) => {
 };
 
 function DragAndDropComponent(props) {
-  console.log(props.lists);
-
   const [columns, setColumns] = useState(columnsFromBackend);
+  const [state, setState] = useState({
+    lists: "",
+  });
+  const { lists } = state;
+
+  let droppables = null;
+
+  if (lists) {
+    droppables = lists.map(({ listId, listTitle, content }) => {
+      return (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+          key={listId}
+        >
+          <h2 key={listId}>{listTitle}</h2>
+          <div style={{ margin: 8 }}>
+            <Droppable droppableId={listTitle} key={listId}>
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  style={{
+                    background: snapshot.isDraggingOver
+                      ? "lightblue"
+                      : "lightgrey",
+                    padding: 4,
+                    width: 250,
+                    minHeight: "50px",
+                  }}
+                  {...provided.droppableProps}
+                >
+                  I am a droppable!
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </div>
+        </div>
+      );
+    });
+  }
+
+  useEffect(() => {
+    setState({ ...state, lists: props.lists });
+  }, [props.lists]);
+
   return (
     <div style={{ display: "flex", justifyContent: "left", height: "100%" }}>
       <DragDropContext
         onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
       >
+        {droppables}
+
         {Object.entries(columns).map(([columnId, column], index) => {
           return (
             <div

@@ -10,33 +10,33 @@ app.get("/api/getUsername", (req, res) =>
 
 let lists = [
   {
-    id: 0,
-    title: "New Content List",
+    listId: 0,
+    listTitle: "New Content List",
     content: [
       {
-        id: 0,
+        contentId: 0,
         url: "etsy.com",
-        title: "First new content",
+        contentTitle: "First new content",
         brainfart: "This is the first brainfart",
         category: "Fashion",
       },
       {
-        id: 1,
+        contentId: 1,
         url: "spotify.com",
-        title: "Second new content",
+        contentTitle: "Second new content",
         brainfart: "This is the second brainfart",
         category: "Music",
       },
     ],
   },
   {
-    id: 1,
-    title: "Clothes",
+    listId: 1,
+    listTitle: "Clothes",
     content: [
       {
-        id: 0,
+        contentId: 0,
         url: "asos.com",
-        title: "Fav ASOS Jacket",
+        contentTitle: "Fav ASOS Jacket",
         brainfart: "I love this jacket omg",
         category: "Fashion",
       },
