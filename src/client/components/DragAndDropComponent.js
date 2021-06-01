@@ -74,15 +74,74 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 };
 
+function handleDragEnd(result, state, setState) {
+  if (!result.destination) return;
+  const { source, destination } = result;
+  const { lists } = state;
+
+  if (source.listId !== destination.listId) {
+    const sourceList = lists[source.droppableId];
+    const destList = lists[destination.droppableId];
+    const sourceContent = [...sourceList.content];
+    const destContent = [...destList.content];
+    const [removed] = sourceList.splice(source.index, 1);
+    destList.splice(destination.index, 0, removed);
+
+    setState({
+      ...lists,
+      [source.droppableId]: {
+        ...sourceList,
+        content: sourceContent,
+      },
+      [destination.droppableId]: {
+        ...destList,
+        content: destContent,
+      },
+    });
+  } else {
+    const list = lists[source.index];
+    const copiedContent = [...list.content];
+    const [removed] = copiedContent.splice(source.index, 1);
+    copiedContent.splice(destination.index, 0, removed);
+    setState({
+      ...lists,
+      [source.droppableId]: {
+        ...list,
+        content: copiedContent,
+      },
+    });
+
+    console.log(lists);
+  }
+
+  // else {
+  //   const column = columns[source.droppableId];
+  //   const copiedItems = [...column.items];
+  //   const [removed] = copiedItems.splice(source.index, 1);
+  //   copiedItems.splice(destination.index, 0, removed);
+  //   setColumns({
+  //     ...columns,
+  //     [source.droppableId]: {
+  //       ...column,
+  //       items: copiedItems,
+  //     },
+  //   });
+  // }
+}
+
 function DragAndDropComponent(props) {
   const [columns, setColumns] = useState(columnsFromBackend);
   const [state, setState] = useState({
-    lists: "",
+    lists: [],
   });
   const { lists } = state;
-
   let droppables = null;
 
+  useEffect(() => {
+    setState({ ...state, lists: props.lists });
+  }, [props.lists]);
+
+  // Populate Droppables once data is fetched
   if (lists) {
     droppables = lists.map(({ listId, listTitle, content }) => {
       return (
@@ -154,14 +213,11 @@ function DragAndDropComponent(props) {
     });
   }
 
-  useEffect(() => {
-    setState({ ...state, lists: props.lists });
-  }, [props.lists]);
-
   return (
     <div style={{ display: "flex", justifyContent: "left", height: "100%" }}>
       <DragDropContext
-        onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+        onDragEnd={(result) => handleDragEnd(result, state, setState)}
+        // onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
       >
         {droppables}
 

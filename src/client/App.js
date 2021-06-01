@@ -65,7 +65,9 @@ export default class App extends Component {
 
         {this.state.profileObj ? (
           <div>
-            <DragAndDropComponent lists={this.state.lists} />
+            <div style={{ overflow: "scroll" }}>
+              <DragAndDropComponent lists={this.state.lists} />
+            </div>
             <LogOutComponent responseGoogleLogout={this.responseGoogleLogout} />
           </div>
         ) : (
