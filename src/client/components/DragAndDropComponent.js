@@ -37,6 +37,7 @@ const columnsFromBackend = {
   },
 };
 
+// delete
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
   const { source, destination } = result;
@@ -74,7 +75,8 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 };
 
-function handleDragEnd(result, state, setState) {
+// delete
+function handleDragEndtemp(result, state, setState) {
   if (!result.destination) return;
   const { source, destination } = result;
   const { lists } = state;
@@ -110,23 +112,39 @@ function handleDragEnd(result, state, setState) {
         content: copiedContent,
       },
     });
+  }
+}
 
-    console.log(lists);
+function handleDragEnd(result, state, setState) {
+  const { source, destination, draggableId } = result;
+  const { lists } = state;
+
+  if (!destination) return;
+  if (
+    destination.droppableId === source.droppableId &&
+    destination.index === source.index
+  ) {
+    return;
   }
 
-  // else {
-  //   const column = columns[source.droppableId];
-  //   const copiedItems = [...column.items];
-  //   const [removed] = copiedItems.splice(source.index, 1);
-  //   copiedItems.splice(destination.index, 0, removed);
-  //   setColumns({
-  //     ...columns,
-  //     [source.droppableId]: {
-  //       ...column,
-  //       items: copiedItems,
-  //     },
-  //   });
-  // }
+  const list = lists[source.index];
+  const newContent = Array.from(list.content);
+  newContent.splice(source.index, 1);
+  newContent.splice(destination.index, 0, list.content[source.index]);
+
+  const newList = {
+    ...list,
+    content: newContent,
+  };
+
+  const newLists = [...lists];
+  newLists[source.index] = newList;
+
+  const newState = {
+    lists: newLists,
+  };
+
+  setState(newState);
 }
 
 function DragAndDropComponent(props) {
@@ -216,10 +234,11 @@ function DragAndDropComponent(props) {
   return (
     <div style={{ display: "flex", justifyContent: "left", height: "100%" }}>
       <DragDropContext
-        onDragEnd={(result) => handleDragEnd(result, state, setState)}
-        // onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+        // onDragEnd={(result) => console.log(result)}
+        // onDragEnd={(result) => handleDragEnd(result, state, setState)}
+        onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
       >
-        {droppables}
+        {/* {droppables} */}
 
         {Object.entries(columns).map(([columnId, column], index) => {
           return (

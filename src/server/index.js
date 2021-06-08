@@ -1,11 +1,12 @@
 const express = require("express");
-const os = require("os");
-
+const router = express.Router();
 const app = express();
 
-app.use(express.static("dist"));
-app.get("/api/getUsername", (req, res) =>
-  res.send({ username: os.userInfo().username })
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: false,
+  })
 );
 
 let lists = [
@@ -44,8 +45,24 @@ let lists = [
   },
 ];
 
-app.get("/api/getLists", (req, res) => res.send({ lists }));
+// app.get("/api", (req, res) => res.json({ lists }));
+// app.get("/api", (req, res) => res.json({ lists }));
 
-app.listen(process.env.PORT || 8080, () =>
-  console.log(`Listening on port ${process.env.PORT || 8080}!`)
-);
+// app.use("/", router);
+
+// app.listen(process.env.PORT || 8080, () =>
+//   console.log(`Listening on port ${process.env.PORT || 8080}!`)
+// );
+
+
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// const firebaseConfig = {
+//   apiKey: process.env.APIKEY,
+//   authDomain: process.env.AUTHDOMAIN,
+//   projectId: process.env.PROJECTID,
+//   storageBucket: process.env.SOTRAGEBUCKET,
+//   messagingSenderId: process.env.MESSAGINGSENDERID,
+//   appId: process.env.APPID,
+//   measurementId: process.env.MEASUREMENTID,
+// };
