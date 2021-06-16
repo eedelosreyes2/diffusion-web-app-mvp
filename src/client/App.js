@@ -24,7 +24,7 @@ export default class App extends Component {
 		const state = JSON.parse(sessionStorage.getItem('state'));
 		if (state) {
 			this.setState(state);
-			this.getNewList();
+			this.fetchNewList();
 		}
 	};
 
@@ -39,7 +39,7 @@ export default class App extends Component {
 			const username = email.replace(/[^a-zA-Z0-9 ]/g, '');
 			this.setState({ username });
 			this.setState({ profileObj });
-			this.getNewList();
+			this.fetchNewList();
 		}
 	};
 
@@ -47,14 +47,14 @@ export default class App extends Component {
 		this.setState({ profileObj: null });
 	};
 
-	getNewList = async () => {
+	fetchNewList = async () => {
 		let url = 'https://diffusion-web-app-mvp-default-rtdb.firebaseio.com/';
 		url += this.state.username + '/newList.json';
 
 		axios
 			.get(url)
 			.then((res) => {
-				const { newList } = res.data;
+				const newList = res.data;
 				if (newList) {
 					this.setState({ newList });
 				}
@@ -65,31 +65,31 @@ export default class App extends Component {
 	render() {
 		const profileObj = this.state.profileObj;
 
-		console.log(this.state.newList);
-
 		return (
-			<div>
+			<>
 				{profileObj ? (
-					<h1>{`Hello ${profileObj.givenName} ${profileObj.familyName}!`}</h1>
-				) : (
-					<h1>Please login!</h1>
-				)}
-
-				{this.state.profileObj ? (
-					<div>
-						<div style={{ overflow: 'scroll' }}>
-							<DragAndDropComponent lists={this.state.lists} />
+					<>
+						<h1>{`Hello ${profileObj.givenName} ${profileObj.familyName}!`}</h1>
+						<div>
+							<div style={{ overflow: 'scroll' }}>
+								<DragAndDropComponent
+									lists={this.state.lists}
+								/>
+							</div>
+							<LogOutComponent
+								responseGoogleLogout={this.responseGoogleLogout}
+							/>
 						</div>
-						<LogOutComponent
-							responseGoogleLogout={this.responseGoogleLogout}
-						/>
-					</div>
+					</>
 				) : (
-					<LogInComponent
-						responseGoogleLogin={this.responseGoogleLogin}
-					/>
+					<>
+						<h1>Please login!</h1>
+						<LogInComponent
+							responseGoogleLogin={this.responseGoogleLogin}
+						/>
+					</>
 				)}
-			</div>
+			</>
 		);
 	}
 }
