@@ -1,79 +1,95 @@
-import React, { Component } from "react";
-import axios from "axios";
-import DragAndDropComponent from "./components/DragAndDropComponent";
-import LogInComponent from "./components/LogInComponent";
-import LogOutComponent from "./components/LogOutComponent";
-import "./app.css";
+import React, { Component } from 'react';
+import axios from 'axios';
+import DragAndDropComponent from './components/DragAndDropComponent';
+import LogInComponent from './components/LogInComponent';
+import LogOutComponent from './components/LogOutComponent';
+import './app.css';
 
 export default class App extends Component {
-  state = { profileObj: null, lists: null };
+	state = { profileObj: null, username: '', newList: null, lists: null };
 
-  componentDidMount = () => {
-    this.getProfileObj();
-    window.addEventListener("load", this.getProfileObj);
-    window.addEventListener("beforeunload", this.setProfileObj);
-  };
+	componentDidMount = () => {
+		this.getCache();
+		window.addEventListener('load', this.getCache);
+		window.addEventListener('beforeunload', this.setCache);
+	};
 
-  componentWillUnmount = () => {
-    this.setProfileObj();
-    window.removeEventListener("load", this.getProfileObj);
-    window.removeEventListener("beforeunload", this.setProfileObj);
-  };
+	componentWillUnmount = () => {
+		this.setCache();
+		window.removeEventListener('load', this.getCache);
+		window.removeEventListener('beforeunload', this.setCache);
+	};
 
-  getProfileObj = () => {
-    const profileObj = JSON.parse(sessionStorage.getItem("profileObj"));
-    if (profileObj) {
-      this.setState({ profileObj });
-      this.fetchData(profileObj.email);
-    }
-  };
+	getCache = () => {
+		const state = JSON.parse(sessionStorage.getItem('state'));
+		if (state) {
+			this.setState(state);
+			this.getNewList();
+		}
+	};
 
-  setProfileObj = () => {
-    sessionStorage.setItem("profileObj", JSON.stringify(this.state.profileObj));
-  };
+	setCache = () => {
+		sessionStorage.setItem('state', JSON.stringify(this.state));
+	};
 
-  responseGoogleLogin = (response) => {
-    if (response.profileObj) {
-      const profileObj = response.profileObj;
-      const email = profileObj.email;
-      this.setState({ profileObj });
-      this.fetchData(email);
-    }
-  };
+	responseGoogleLogin = (response) => {
+		if (response.profileObj) {
+			const profileObj = response.profileObj;
+			const email = profileObj.email;
+			const username = email.replace(/[^a-zA-Z0-9 ]/g, '');
+			this.setState({ username });
+			this.setState({ profileObj });
+			this.getNewList();
+		}
+	};
 
-  responseGoogleLogout = (response) => {
-    this.setState({ profileObj: null });
-  };
+	responseGoogleLogout = (response) => {
+		this.setState({ profileObj: null });
+	};
 
-  fetchData = async (email) => {
-    axios.get("/api/getLists").then((res) => {
-      const { lists } = res.data;
-      this.setState({ lists });
-    });
-  };
+	getNewList = async () => {
+		let url = 'https://diffusion-web-app-mvp-default-rtdb.firebaseio.com/';
+		url += this.state.username + '/newList.json';
 
-  render() {
-    const profileObj = this.state.profileObj;
+		axios
+			.get(url)
+			.then((res) => {
+				const { newList } = res.data;
+				if (newList) {
+					this.setState({ newList });
+				}
+			})
+			.catch((err) => console.log(err));
+	};
 
-    return (
-      <div>
-        {profileObj ? (
-          <h1>{`Hello ${profileObj.givenName} ${profileObj.familyName}!`}</h1>
-        ) : (
-          <h1>Please login!</h1>
-        )}
+	render() {
+		const profileObj = this.state.profileObj;
 
-        {this.state.profileObj ? (
-          <div>
-            <div style={{ overflow: "scroll" }}>
-              <DragAndDropComponent lists={this.state.lists} />
-            </div>
-            <LogOutComponent responseGoogleLogout={this.responseGoogleLogout} />
-          </div>
-        ) : (
-          <LogInComponent responseGoogleLogin={this.responseGoogleLogin} />
-        )}
-      </div>
-    );
-  }
+		console.log(this.state.newList);
+
+		return (
+			<div>
+				{profileObj ? (
+					<h1>{`Hello ${profileObj.givenName} ${profileObj.familyName}!`}</h1>
+				) : (
+					<h1>Please login!</h1>
+				)}
+
+				{this.state.profileObj ? (
+					<div>
+						<div style={{ overflow: 'scroll' }}>
+							<DragAndDropComponent lists={this.state.lists} />
+						</div>
+						<LogOutComponent
+							responseGoogleLogout={this.responseGoogleLogout}
+						/>
+					</div>
+				) : (
+					<LogInComponent
+						responseGoogleLogin={this.responseGoogleLogin}
+					/>
+				)}
+			</div>
+		);
+	}
 }
