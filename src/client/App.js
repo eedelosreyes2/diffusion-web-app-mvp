@@ -6,7 +6,7 @@ import LogOutComponent from './components/LogOutComponent';
 import './app.css';
 
 export default class App extends Component {
-	state = { profileObj: null, username: '', newList: null, lists: null };
+	state = { profileObj: null, username: '', boards: null };
 
 	componentDidMount = () => {
 		this.getCache();
@@ -24,7 +24,7 @@ export default class App extends Component {
 		const state = JSON.parse(sessionStorage.getItem('state'));
 		if (state) {
 			this.setState(state);
-			this.fetchNewList();
+			this.fetchBoads();
 		}
 	};
 
@@ -39,7 +39,7 @@ export default class App extends Component {
 			const username = email.replace(/[^a-zA-Z0-9 ]/g, '');
 			this.setState({ username });
 			this.setState({ profileObj });
-			this.fetchNewList();
+			this.fetchBoads();
 		}
 	};
 
@@ -47,23 +47,23 @@ export default class App extends Component {
 		this.setState({ profileObj: null });
 	};
 
-	fetchNewList = async () => {
+	fetchBoads = async () => {
 		let url = 'https://diffusion-web-app-mvp-default-rtdb.firebaseio.com/';
-		url += this.state.username + '/newList.json';
+		url += this.state.username + '/boards.json';
 
 		axios
 			.get(url)
 			.then((res) => {
-				const newList = res.data;
-				if (newList) {
-					this.setState({ newList });
+				const boards = res.data;
+				if (boards) {
+					this.setState({ boards });
 				}
 			})
 			.catch((err) => console.log(err));
 	};
 
 	render() {
-		const profileObj = this.state.profileObj;
+		const { profileObj, newBoard, boards } = this.state;
 
 		return (
 			<>
@@ -72,9 +72,7 @@ export default class App extends Component {
 						<h1>{`Hello ${profileObj.givenName} ${profileObj.familyName}!`}</h1>
 						<div>
 							<div style={{ overflow: 'scroll' }}>
-								<DragAndDropComponent
-									lists={this.state.lists}
-								/>
+								<DragAndDropComponent boards={boards} />
 							</div>
 							<LogOutComponent
 								responseGoogleLogout={this.responseGoogleLogout}
