@@ -78,8 +78,6 @@ export default class PinboardCreator extends Component {
 	render() {
 		const { data } = this.props;
 
-		console.log(data);
-
 		if (data) {
 			return (
 				<DragDropContext onDragEnd={this.handleDragEnd}>

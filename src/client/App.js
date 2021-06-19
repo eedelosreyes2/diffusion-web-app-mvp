@@ -7,7 +7,7 @@ import './app.css';
 import data from '../data';
 
 export default class App extends Component {
-	state = { data: data, profileObj: null, username: '', boards: null };
+	state = { data: data, profileObj: null, username: null, boards: null };
 
 	componentDidMount = () => {
 		this.getCache();
@@ -50,11 +50,15 @@ export default class App extends Component {
 
 	fetchBoads = async () => {
 		let url = 'https://diffusion-web-app-mvp-default-rtdb.firebaseio.com/';
-		url += this.state.username + '/boards.json';
+		url += this.state.username + '.json';
 
 		axios
 			.get(url)
 			.then((res) => {
+				const key = Object.keys(res.data)[0];
+				const { data } = res.data[key];
+				console.log(data);
+				// console.log(Object.keys(res.data)[0]);
 				const boards = res.data;
 				if (boards) {
 					this.setState({ boards });

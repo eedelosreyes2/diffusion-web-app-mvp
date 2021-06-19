@@ -26,4 +26,41 @@ const data = {
 	columnOrder: ['column-1', 'column-2', 'column-3'],
 };
 
+const data1 = {
+	content: {
+		'content-1': {
+			id: 'content-1',
+			url: 'youtube.com',
+			quickThoughts: 'Logan was such a pussy during this fight ahaha.',
+			category: 'Entertainment',
+		},
+		'content-2': {
+			id: 'content-2',
+			url: 'twitter.com',
+			quickThoughts: 'This tweet is so me like omg.',
+			category: 'Entertainment',
+		},
+		'content-3': {
+			id: 'content-3',
+			url: 'google.com',
+			quickThoughts: 'Wow these are so sick dude.',
+			category: 'Everyday Life',
+		},
+		'content-4': {
+			id: 'content-4',
+			url: 'zara.com',
+			quickThoughts: 'These are the pants that I have always wanted.',
+			category: 'Fashion',
+		},
+	},
+	boards: {
+		'board-1': {
+			id: 'board-1',
+			title: 'New List',
+			contentIds: ['content-1', 'content-2', 'content-3', 'content-4'],
+		},
+	},
+	boardOrder: ['board-1', 'board-2', 'board-3', 'board-4'],
+};
+
 export default data;
