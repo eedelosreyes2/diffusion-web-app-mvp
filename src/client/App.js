@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import DragAndDropComponent from './components/DragAndDropComponent';
+import PinboardCreator from './components/PinboardCreator';
 import LogInComponent from './components/LogInComponent';
 import LogOutComponent from './components/LogOutComponent';
 import './app.css';
+import data from '../data';
 
 export default class App extends Component {
-	state = { profileObj: null, username: '', boards: null };
+	state = { data, profileObj: null, username: '', boards: null };
 
 	componentDidMount = () => {
 		this.getCache();
@@ -63,7 +65,9 @@ export default class App extends Component {
 	};
 
 	render() {
-		const { profileObj, newBoard, boards } = this.state;
+		const { profileObj, boards } = this.state;
+
+		// console.log(this.state);
 
 		return (
 			<>
@@ -72,7 +76,8 @@ export default class App extends Component {
 						<h1>{`Hello ${profileObj.givenName} ${profileObj.familyName}!`}</h1>
 						<div>
 							<div style={{ overflow: 'scroll' }}>
-								<DragAndDropComponent boards={boards} />
+								{/* <DragAndDropComponent boards={boards} /> */}
+								<PinboardCreator data={data} />
 							</div>
 							<LogOutComponent
 								responseGoogleLogout={this.responseGoogleLogout}

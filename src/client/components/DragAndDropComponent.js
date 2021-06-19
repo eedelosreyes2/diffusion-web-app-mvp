@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { DragDropContext } from 'react-beautiful-dnd';
+import Board from './Board';
 
 export default function DragAndDropComponent(props) {
-	const [boards, setBoards] = useState(props);
-
-	console.log(boards);
+	const [{ boards }, setBoards] = useState(props);
 
 	useEffect(() => {
 		setBoards(props);
@@ -50,17 +50,13 @@ export default function DragAndDropComponent(props) {
 		<div
 			style={{ display: 'flex', justifyContent: 'left', height: '100%' }}
 		>
-			{/* <DragAndDropComponent
-				onDragEnd={(result) => onDragEnd(result, boards, setBoards)}
+			<DragDropContext
+			// onDragEnd={(result) => onDragEnd(result, boards, setBoards)}
 			>
 				{Object.entries(boards).map((board, index) => {
-					return (
-						<div>
-							{board} {index}
-						</div>
-					);
+					return <Board key={index} board={board}></Board>;
 				})}
-			</DragAndDropComponent> */}
+			</DragDropContext>
 		</div>
 	);
 }
