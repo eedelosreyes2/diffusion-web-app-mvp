@@ -7,9 +7,10 @@ const Container = styled.div`
 	background-color: white;
 	border: 2px solid #00b1d2;
 	border-radius: 15px;
-	height: 700px;
+	display: flex;
+	flex-direction: column;
 	margin: 15px;
-	padding 5px;
+	// padding 5px;
 	width 300px;
 `;
 
@@ -20,8 +21,13 @@ const Title = styled.div`
 `;
 
 const CardsContainer = styled.div`
+	// background-color: ${(props) =>
+		props.isDraggingOver ? 'grey' : 'white'};
+	border-radius: 15px;
+	flex-grow: 1;
 	margin: auto;
-	width: 90%;
+	padding-top: 10px;
+	width: 100%;
 `;
 
 export class Board extends Component {
@@ -30,11 +36,12 @@ export class Board extends Component {
 			<Container>
 				<Title>{this.props.column.title}</Title>
 				<Droppable droppableId={this.props.column.id}>
-					{(provided) => {
+					{(provided, snapshot) => {
 						return (
 							<CardsContainer
 								ref={provided.innerRef}
 								{...provided.droppableProps}
+								isDraggingOver={snapshot.isDraggingOver}
 							>
 								{this.props.tasks.map((task, index) => (
 									<Card

@@ -3,13 +3,11 @@ import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
 const Container = styled.div`
-	background-color: white;
+	background-color: ${(props) => (props.isDragging ? 'lightblue' : ' white')};
 	border: 1px solid lightgrey;
 	border-radius: 2px;
 	margin-bottom: 10px;
 	min-height: 50px;
-	padding: 5px auto;
-	width: 100%;
 `;
 
 export class Card extends Component {
@@ -19,12 +17,13 @@ export class Card extends Component {
 				draggableId={this.props.task.id}
 				index={this.props.index}
 			>
-				{(provided) => {
+				{(provided, snapshot) => {
 					return (
 						<Container
 							{...provided.draggableProps}
 							{...provided.dragHandleProps}
 							ref={provided.innerRef}
+							isDragging={snapshot.isDragging}
 						>
 							{this.props.task.content}
 						</Container>
