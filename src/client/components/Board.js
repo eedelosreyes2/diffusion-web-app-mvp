@@ -16,7 +16,8 @@ const Container = styled.div`
 const Title = styled.div`
 	font-size: 24px;
 	height: 50px;
-	padding: 15px 0;
+	margin-top: 20px;
+	text-align: center;
 	width: 100%;
 `;
 
@@ -26,7 +27,6 @@ const CardsContainer = styled.div`
 	border-radius: 15px;
 	flex-grow: 1;
 	margin: auto;
-	padding-top: 10px;
 	width: 100%;
 `;
 

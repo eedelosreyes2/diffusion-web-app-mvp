@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Header from './components/Header';
 import PinboardCreator from './components/PinboardCreator';
 import LogInComponent from './components/LogInComponent';
 import LogOutComponent from './components/LogOutComponent';
@@ -94,22 +95,20 @@ export default class App extends Component {
 			<>
 				{profileObj ? (
 					<>
-						<h1>{`Hello ${profileObj.givenName} ${profileObj.familyName}!`}</h1>
-						<div>
-							<div style={{ overflow: 'scroll' }}>
-								<PinboardCreator
-									data={data}
-									updateBoards={this.updateBoards}
-								/>
-							</div>
-							<LogOutComponent
-								responseGoogleLogout={this.responseGoogleLogout}
-							/>
-						</div>
+						<Header
+							profileObj={profileObj}
+							responseGoogleLogout={this.responseGoogleLogout}
+						/>
+						<PinboardCreator
+							data={data}
+							updateBoards={this.updateBoards}
+						/>
+						{/* <LogOutComponent
+							responseGoogleLogout={this.responseGoogleLogout}
+						/> */}
 					</>
 				) : (
 					<>
-						<h1>Please login!</h1>
 						<LogInComponent
 							responseGoogleLogin={this.responseGoogleLogin}
 						/>

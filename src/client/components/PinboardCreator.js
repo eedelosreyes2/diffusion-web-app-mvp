@@ -5,6 +5,7 @@ import Board from './Board';
 
 const Container = styled.div`
 	display: flex;
+	justify-content: center;
 `;
 
 export default class PinboardCreator extends Component {
@@ -81,7 +82,7 @@ export default class PinboardCreator extends Component {
 		if (data) {
 			return (
 				<DragDropContext onDragEnd={this.handleDragEnd}>
-					<Container>
+					<Container className="hidden-scroll">
 						{data.boardOrder.map((boardId) => {
 							const board = data.boards[boardId];
 							const content = board.contentIds.map(

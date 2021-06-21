@@ -1,8 +1,20 @@
-h1 {
-  color: green;
+@import url('https://fonts.googleapis.com/css?family=Aleo&display=swap');
+
+:root {
+	--primary-color: #00b1d2;
+	--secondary-color: #fddb27;
 }
 
 body {
-  text-align: center;
-  margin: auto;
+	font-family: 'Aleo', serif;
+	margin: auto;
+	text-align: left;
+}
+
+.hidden-scroll {
+	overflow: 'scroll';
+}
+
+.hidden-scroll::-webkit-scrollbar {
+	display: none;
 }
