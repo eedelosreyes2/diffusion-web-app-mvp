@@ -103,9 +103,9 @@ export default class App extends Component {
 							data={data}
 							updateBoards={this.updateBoards}
 						/>
-						{/* <LogOutComponent
+						<LogOutComponent
 							responseGoogleLogout={this.responseGoogleLogout}
-						/> */}
+						/>
 					</>
 				) : (
 					<>

@@ -20,9 +20,6 @@ export default class Header extends Component {
 		return (
 			<Container>
 				<H1>{`Hello ${givenName} ${familyName}!`}</H1>
-				<LogOutComponent
-					responseGoogleLogout={this.responseGoogleLogout}
-				/>
 			</Container>
 		);
 	}
