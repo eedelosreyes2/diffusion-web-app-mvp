@@ -20,6 +20,12 @@ export default class App extends Component {
 		window.removeEventListener('beforeunload', this.setCache);
 	};
 
+	componentDidUpdate(prevProps, prevState) {
+		if (this.state !== prevState) {
+			this.putBoards();
+		}
+	}
+
 	getCache = () => {
 		const state = JSON.parse(sessionStorage.getItem('state'));
 		if (state) {
@@ -30,6 +36,38 @@ export default class App extends Component {
 
 	setCache = () => {
 		sessionStorage.setItem('state', JSON.stringify(this.state));
+		this.putBoards();
+	};
+
+	fetchBoads = async () => {
+		let url =
+			'https://diffusion-web-app-mvp-default-rtdb.firebaseio.com/' +
+			this.state.username +
+			'/data.json';
+
+		axios
+			.get(url)
+			.then((res) => {
+				const { data } = res;
+				if (data) {
+					this.setState({ data });
+				}
+			})
+			.catch((err) => console.log(err));
+	};
+
+	putBoards = async () => {
+		let url =
+			'https://diffusion-web-app-mvp-default-rtdb.firebaseio.com/' +
+			this.state.username +
+			'/data.json';
+		const { data } = this.state;
+
+		axios.put(url, data, { headers: { 'Content-Type': 'text/plain' } });
+	};
+
+	updateBoards = (newState) => {
+		this.setState(newState);
 	};
 
 	responseGoogleLogin = (response) => {
@@ -47,27 +85,10 @@ export default class App extends Component {
 		this.setState({ profileObj: null });
 	};
 
-	fetchBoads = async () => {
-		let url = 'https://diffusion-web-app-mvp-default-rtdb.firebaseio.com/';
-		url += this.state.username + '/data.json';
-
-		axios
-			.get(url)
-			.then((res) => {
-				const { data } = res;
-				if (data) {
-					this.setState({ data });
-				}
-			})
-			.catch((err) => console.log(err));
-	};
-
-	updateBoards = (newState) => {
-		this.setState(newState);
-	};
-
 	render() {
 		const { data, profileObj } = this.state;
+
+		// console.log(this.state);
 
 		return (
 			<>

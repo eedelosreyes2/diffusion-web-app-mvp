@@ -10,6 +10,12 @@ const Container = styled.div`
 	min-height: 50px;
 `;
 
+const Url = styled.div``;
+
+const QuickThoughts = styled.div``;
+
+const Category = styled.div``;
+
 export class Card extends Component {
 	render() {
 		return (
@@ -25,9 +31,11 @@ export class Card extends Component {
 							ref={provided.innerRef}
 							isDragging={snapshot.isDragging}
 						>
-							{this.props.content.url}
-							{this.props.content.quickThoughts}
-							{this.props.content.category}
+							<Url>{this.props.content.url}</Url>
+							<QuickThoughts>
+								{this.props.content.quickThoughts}
+							</QuickThoughts>
+							<Category>{this.props.content.category}</Category>
 						</Container>
 					);
 				}}
