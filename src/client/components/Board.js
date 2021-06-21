@@ -10,14 +10,14 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	margin: 15px;
-	// padding 5px;
 	width 300px;
 `;
 
 const Title = styled.div`
 	font-size: 24px;
 	height: 50px;
-	margin: 15px;
+	padding: 15px 0;
+	width: 100%;
 `;
 
 const CardsContainer = styled.div`
@@ -34,8 +34,8 @@ export class Board extends Component {
 	render() {
 		return (
 			<Container>
-				<Title>{this.props.column.title}</Title>
-				<Droppable droppableId={this.props.column.id}>
+				<Title>{this.props.board.title}</Title>
+				<Droppable droppableId={this.props.board.id}>
 					{(provided, snapshot) => {
 						return (
 							<CardsContainer
@@ -43,13 +43,17 @@ export class Board extends Component {
 								{...provided.droppableProps}
 								isDraggingOver={snapshot.isDraggingOver}
 							>
-								{this.props.tasks.map((task, index) => (
-									<Card
-										key={task.id}
-										task={task}
-										index={index}
-									/>
-								))}
+								{this.props.content.map((content, index) =>
+									content ? (
+										<Card
+											key={content.id}
+											content={content}
+											index={index}
+										/>
+									) : (
+										''
+									)
+								)}
 								{provided.placeholder}
 							</CardsContainer>
 						);

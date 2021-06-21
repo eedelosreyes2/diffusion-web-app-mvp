@@ -56,8 +56,23 @@ const data1 = {
 	boards: {
 		'board-1': {
 			id: 'board-1',
-			title: 'New List',
+			title: 'New Board',
 			contentIds: ['content-1', 'content-2', 'content-3', 'content-4'],
+		},
+		'board-2': {
+			id: 'board-2',
+			title: 'First Board OMG',
+			contentIds: [],
+		},
+		'board-3': {
+			id: 'board-3',
+			title: 'Best clothes ever bitch',
+			contentIds: [],
+		},
+		'board-4': {
+			id: 'board-4',
+			title: 'Some great content  wow',
+			contentIds: [],
 		},
 	},
 	boardOrder: ['board-1', 'board-2', 'board-3', 'board-4'],

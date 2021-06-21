@@ -18,26 +18,26 @@ export default class PinboardCreator extends Component {
 		)
 			return;
 
-		const start = this.props.data.columns[source.droppableId];
-		const finish = this.props.data.columns[destination.droppableId];
+		const start = this.props.data.boards[source.droppableId];
+		const finish = this.props.data.boards[destination.droppableId];
 
 		if (start === finish) {
-			const newTaskIds = Array.from(start.taskIds);
-			newTaskIds.splice(source.index, 1);
-			newTaskIds.splice(destination.index, 0, draggableId);
+			const newContentIds = Array.from(start.contentIds);
+			newContentIds.splice(source.index, 1);
+			newContentIds.splice(destination.index, 0, draggableId);
 
-			const newColumn = {
+			const newBoard = {
 				...start,
-				taskIds: newTaskIds,
+				contentIds: newContentIds,
 			};
 
 			const newState = {
 				...this.props,
 				data: {
 					...this.props.data,
-					columns: {
-						...this.props.data.columns,
-						[newColumn.id]: newColumn,
+					boards: {
+						...this.props.data.boards,
+						[newBoard.id]: newBoard,
 					},
 				},
 			};
@@ -46,26 +46,26 @@ export default class PinboardCreator extends Component {
 			return;
 		}
 
-		const startTaskIds = Array.from(start.taskIds);
-		startTaskIds.splice(source.index, 1);
+		const startContentIds = Array.from(start.contentIds);
+		startContentIds.splice(source.index, 1);
 		const newStart = {
 			...start,
-			taskIds: startTaskIds,
+			contentIds: startContentIds,
 		};
 
-		const finishTaskIds = Array.from(finish.taskIds);
-		finishTaskIds.splice(destination.index, 0, draggableId);
+		const finishContentIds = Array.from(finish.contentIds);
+		finishContentIds.splice(destination.index, 0, draggableId);
 		const newFinish = {
 			...finish,
-			taskIds: finishTaskIds,
+			contentIds: finishContentIds,
 		};
 
 		const newState = {
 			...this.props,
 			data: {
 				...this.props.data,
-				columns: {
-					...this.props.data.columns,
+				boards: {
+					...this.props.data.boards,
 					[newStart.id]: newStart,
 					[newFinish.id]: newFinish,
 				},
@@ -82,16 +82,16 @@ export default class PinboardCreator extends Component {
 			return (
 				<DragDropContext onDragEnd={this.handleDragEnd}>
 					<Container>
-						{data.columnOrder.map((columnId) => {
-							const column = data.columns[columnId];
-							const tasks = column.taskIds.map(
-								(taskId) => data.tasks[taskId]
+						{data.boardOrder.map((boardId) => {
+							const board = data.boards[boardId];
+							const content = board.contentIds.map(
+								(contentId) => data.content[contentId]
 							);
 							return (
 								<Board
-									key={column.id}
-									column={column}
-									tasks={tasks}
+									key={board.id}
+									board={board}
+									content={content}
 								/>
 							);
 						})}

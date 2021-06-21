@@ -14,7 +14,7 @@ export class Card extends Component {
 	render() {
 		return (
 			<Draggable
-				draggableId={this.props.task.id}
+				draggableId={this.props.content.id}
 				index={this.props.index}
 			>
 				{(provided, snapshot) => {
@@ -25,7 +25,9 @@ export class Card extends Component {
 							ref={provided.innerRef}
 							isDragging={snapshot.isDragging}
 						>
-							{this.props.task.content}
+							{this.props.content.url}
+							{this.props.content.quickThoughts}
+							{this.props.content.category}
 						</Container>
 					);
 				}}

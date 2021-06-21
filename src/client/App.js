@@ -4,10 +4,9 @@ import PinboardCreator from './components/PinboardCreator';
 import LogInComponent from './components/LogInComponent';
 import LogOutComponent from './components/LogOutComponent';
 import './app.css';
-import data from '../data';
 
 export default class App extends Component {
-	state = { data: data, profileObj: null, username: null, boards: null };
+	state = { profileObj: null, username: null, data: null };
 
 	componentDidMount = () => {
 		this.getCache();
@@ -50,18 +49,14 @@ export default class App extends Component {
 
 	fetchBoads = async () => {
 		let url = 'https://diffusion-web-app-mvp-default-rtdb.firebaseio.com/';
-		url += this.state.username + '.json';
+		url += this.state.username + '/data.json';
 
 		axios
 			.get(url)
 			.then((res) => {
-				const key = Object.keys(res.data)[0];
-				const { data } = res.data[key];
-				console.log(data);
-				// console.log(Object.keys(res.data)[0]);
-				const boards = res.data;
-				if (boards) {
-					this.setState({ boards });
+				const { data } = res;
+				if (data) {
+					this.setState({ data });
 				}
 			})
 			.catch((err) => console.log(err));
@@ -72,7 +67,7 @@ export default class App extends Component {
 	};
 
 	render() {
-		const { data, profileObj, boards } = this.state;
+		const { data, profileObj } = this.state;
 
 		return (
 			<>
@@ -83,7 +78,6 @@ export default class App extends Component {
 							<div style={{ overflow: 'scroll' }}>
 								<PinboardCreator
 									data={data}
-									boards={boards}
 									updateBoards={this.updateBoards}
 								/>
 							</div>
