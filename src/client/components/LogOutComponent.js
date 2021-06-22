@@ -15,6 +15,7 @@ export class LogOutComponent extends Component {
 		return (
 			<Footer>
 				<GoogleLogout
+					clientId="173875502237-vqno633dqovkrmnot06va4r1iu0m2882.apps.googleusercontent.com"
 					buttonText="Logout"
 					onLogoutSuccess={this.props.responseGoogleLogout}
 					onFailure={this.props.responseGoogleLogout}

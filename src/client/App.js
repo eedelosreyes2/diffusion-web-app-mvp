@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import Header from './components/Header';
 import PinboardCreator from './components/PinboardCreator';
 import LogInComponent from './components/LogInComponent';
 import LogOutComponent from './components/LogOutComponent';
 import './app.css';
+const DB_URL = 'https://diffusion-web-app-mvp-default-rtdb.firebaseio.com/';
 
 export default class App extends Component {
 	state = { profileObj: null, username: null, data: null };
@@ -41,10 +43,7 @@ export default class App extends Component {
 	};
 
 	fetchBoads = async () => {
-		let url =
-			'https://diffusion-web-app-mvp-default-rtdb.firebaseio.com/' +
-			this.state.username +
-			'/data.json';
+		let url = DB_URL + this.state.username + '/data.json';
 
 		axios
 			.get(url)
@@ -58,13 +57,26 @@ export default class App extends Component {
 	};
 
 	putBoards = async () => {
-		let url =
-			'https://diffusion-web-app-mvp-default-rtdb.firebaseio.com/' +
-			this.state.username +
-			'/data.json';
+		let url = DB_URL + this.state.username + '/data.json';
 		const { data } = this.state;
 
-		axios.put(url, data, { headers: { 'Content-Type': 'text/plain' } });
+		this.fetchNewBoards();
+
+		// axios.put(url, data, { headers: { 'Content-Type': 'text/plain' } });
+	};
+
+	fetchNewBoards = async () => {
+		let url = DB_URL + this.state.username + '/data/newContent.json';
+		axios.get(url).then((res) => {
+			const { data } = res;
+			if (data) {
+				Object.entries(data).map((newContent) => {
+					const { url, quickThoughts, category } = newContent[1];
+					console.log(url, quickThoughts, category);
+					// this.state.data.content
+				});
+			}
+		});
 	};
 
 	updateBoards = (newState) => {
@@ -88,8 +100,6 @@ export default class App extends Component {
 
 	render() {
 		const { data, profileObj } = this.state;
-
-		// console.log(this.state);
 
 		return (
 			<>
