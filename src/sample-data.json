@@ -1,0 +1,59 @@
+{
+	"data": {
+		"content": {
+			"content-1": {
+				"id": "content-1",
+				"url": "youtube.com",
+				"quickThoughts": "Logan was such a pussy during this fight ahaha.",
+				"category": "Entertainment"
+			},
+			"content-2": {
+				"id": "content-2",
+				"url": "twitter.com",
+				"quickThoughts": "This tweet is so me like omg.",
+				"category": "Entertainment"
+			},
+			"content-3": {
+				"id": "content-3",
+				"url": "google.com",
+				"quickThoughts": "Wow these are so sick dude.",
+				"category": "Everyday Life"
+			},
+			"content-4": {
+				"id": "content-4",
+				"url": "zara.com",
+				"quickThoughts": "These are the pants that I have always wanted.",
+				"category": "Fashion"
+			}
+		},
+		"boards": {
+			"board-1": {
+				"id": "board-1",
+				"title": "New Board",
+				"contentIds": [
+					"content-1",
+					"content-2",
+					"content-3",
+					"content-4",
+					0
+				]
+			},
+			"board-2": {
+				"id": "board-2",
+				"title": "First Board OMG",
+				"contentIds": [0]
+			},
+			"board-3": {
+				"id": "board-3",
+				"title": "Best clothes ever bitch",
+				"contentIds": [0]
+			},
+			"board-4": {
+				"id": "board-4",
+				"title": "Some great content  wow",
+				"contentIds": [0]
+			}
+		},
+		"boardOrder": ["board-1", "board-2", "board-3", "board-4"]
+	}
+}
