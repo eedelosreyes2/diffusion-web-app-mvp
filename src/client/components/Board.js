@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Card from './Card';
 
 const Container = styled.div`
-	background-color: white;
+	background-color: ${(props) => (props.isDragging ? 'lightblue' : 'white')};
 	border: 2px solid #00b1d2;
 	border-radius: 15px;
 	display: flex;
@@ -38,13 +38,17 @@ export class Board extends Component {
 				draggableId={this.props.board.id}
 				index={this.props.index}
 			>
-				{(provided) => {
+				{(provided, snapshot) => {
 					return (
 						<Container
 							{...provided.draggableProps}
 							ref={provided.innerRef}
+							isDragging={snapshot.isDragging}
 						>
-							<Title {...provided.dragHandleProps}>
+							<Title
+								{...provided.dragHandleProps}
+								isDragging={snapshot.isDragging}
+							>
 								{this.props.board.title}
 							</Title>
 							<Droppable droppableId={this.props.board.id}>

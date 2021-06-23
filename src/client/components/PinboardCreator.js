@@ -132,12 +132,13 @@ export default class PinboardCreator extends Component {
 							direction="horizontal"
 							type="board"
 						>
-							{(provided) => (
+							{(provided, snapshot) => (
 								<Container>
 									<BoardsContainer
 										className="hidden-scroll"
 										ref={provided.innerRef}
 										{...provided.innerRef}
+										isDraggingOver={snapshot.isDraggingOver}
 									>
 										{data.boardOrder.map(
 											(boardId, index) => {
