@@ -23,9 +23,12 @@ const Title = styled.div`
 `;
 
 const CardsContainer = styled.div`
+	align-items: center;
 	// background-color: ${(props) =>
 		props.isDraggingOver ? 'grey' : 'white'};
 	border-radius: 15px;
+	display: flex;
+	flex-direction: column;
 	flex-grow: 1;
 	margin: auto;
 	width: 100%;
