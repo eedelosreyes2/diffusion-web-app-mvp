@@ -7,8 +7,9 @@ const Container = styled.div`
 	background-color: ${(props) => (props.isDragging ? 'lightblue' : ' white')};
 	border: 1px solid lightgrey;
 	border-radius: 5px;
-	margin-bottom: 10px;
+	margin: 10px auto;
 	min-height: 50px;
+	width: 290px;
 `;
 
 const Url = styled.div`
@@ -39,7 +40,16 @@ export class Card extends Component {
 							ref={provided.innerRef}
 							isDragging={snapshot.isDragging}
 						>
-							<Url>{this.props.content.url}</Url>
+							<Url>
+								{
+									this.props.content.url
+										.replace(
+											/^(?:https?:\/\/)?(?:www\.)?/i,
+											''
+										)
+										.split('/')[0]
+								}
+							</Url>
 							<QuickThoughts>
 								{this.props.content.quickThoughts}
 							</QuickThoughts>

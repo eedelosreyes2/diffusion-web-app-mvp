@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import styled from 'styled-components';
+import Header from './Header';
 import Board from './Board';
+import styled from 'styled-components';
 
 const Container = styled.div`
+	margin: 0 auto;
+	width: 90%;
+`;
+
+const BoardsContainer = styled.div`
 	display: flex;
-	justify-content: center;
+	justify-content: left;
+	margin: 0 auto;
+	overflow: auto;
+	width: 100%;
 `;
 
 export default class PinboardCreator extends Component {
@@ -76,28 +85,41 @@ export default class PinboardCreator extends Component {
 		this.props.updateBoards(newState);
 	};
 
+	createBoard = () => {
+		console.log('OKOK');
+	};
+
 	render() {
-		const { data } = this.props;
+		const { profileObj, data } = this.props;
 
 		if (data) {
 			return (
-				<DragDropContext onDragEnd={this.handleDragEnd}>
-					<Container className="hidden-scroll">
-						{data.boardOrder.map((boardId) => {
-							const board = data.boards[boardId];
-							const content = board.contentIds.map(
-								(contentId) => data.content[contentId]
-							);
-							return (
-								<Board
-									key={board.id}
-									board={board}
-									content={content}
-								/>
-							);
-						})}
-					</Container>
-				</DragDropContext>
+				<>
+					<Header
+						profileObj={profileObj}
+						responseGoogleLogout={this.props.responseGoogleLogout}
+						createBoard={this.createBoard}
+					/>
+					<DragDropContext onDragEnd={this.handleDragEnd}>
+						<Container>
+							<BoardsContainer className="hidden-scroll">
+								{data.boardOrder.map((boardId) => {
+									const board = data.boards[boardId];
+									const content = board.contentIds.map(
+										(contentId) => data.content[contentId]
+									);
+									return (
+										<Board
+											key={board.id}
+											board={board}
+											content={content}
+										/>
+									);
+								})}
+							</BoardsContainer>
+						</Container>
+					</DragDropContext>
+				</>
 			);
 		}
 		return <div></div>;

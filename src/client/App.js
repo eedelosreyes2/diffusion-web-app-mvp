@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import Header from './components/Header';
 import PinboardCreator from './components/PinboardCreator';
 import LogInComponent from './components/LogInComponent';
 import LogOutComponent from './components/LogOutComponent';
@@ -60,9 +59,11 @@ export default class App extends Component {
 	putBoards = async () => {
 		let url = DB_URL + this.state.username + '/data.json';
 		const { data } = this.state;
-		data.newContent = null;
 
-		axios.put(url, data, { headers: { 'Content-Type': 'text/plain' } });
+		if (data) {
+			data.newContent = null;
+			axios.put(url, data, { headers: { 'Content-Type': 'text/plain' } });
+		}
 	};
 
 	fetchNewBoards = async () => {
@@ -135,13 +136,11 @@ export default class App extends Component {
 			<>
 				{profileObj ? (
 					<>
-						<Header
-							profileObj={profileObj}
-							responseGoogleLogout={this.responseGoogleLogout}
-						/>
 						<PinboardCreator
+							profileObj={profileObj}
 							data={data}
 							updateBoards={this.updateBoards}
+							responseGoogleLogout={this.responseGoogleLogout}
 						/>
 						<LogOutComponent
 							responseGoogleLogout={this.responseGoogleLogout}
