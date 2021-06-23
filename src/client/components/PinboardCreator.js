@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Header from './Header';
 import Board from './Board';
 import styled from 'styled-components';
@@ -19,8 +19,9 @@ const BoardsContainer = styled.div`
 
 export default class PinboardCreator extends Component {
 	handleDragEnd = (result) => {
-		const { destination, source, draggableId } = result;
+		const { destination, source, draggableId, type } = result;
 
+		// Invalid Drag
 		if (!destination) return;
 		if (
 			destination.droppableId === source.droppableId &&
@@ -28,6 +29,25 @@ export default class PinboardCreator extends Component {
 		)
 			return;
 
+		// Dragging Boards
+		if (type === 'board') {
+			const newBoardOrder = Array.from(this.props.data.boardOrder);
+			newBoardOrder.splice(source.index, 1);
+			newBoardOrder.splice(destination.index, 0, draggableId);
+
+			const newState = {
+				...this.props,
+				data: {
+					...this.props.data,
+					boardOrder: newBoardOrder,
+				},
+			};
+
+			this.props.updateBoards(newState);
+			return;
+		}
+
+		// Dragging Content between Boards
 		const start = this.props.data.boards[source.droppableId];
 		const finish = this.props.data.boards[destination.droppableId];
 
@@ -56,6 +76,7 @@ export default class PinboardCreator extends Component {
 			return;
 		}
 
+		// Dragging Content within Board
 		const startContentIds = Array.from(start.contentIds);
 		startContentIds.splice(source.index, 1);
 		const newStart = {
@@ -106,23 +127,44 @@ export default class PinboardCreator extends Component {
 						deleteBoard={this.deleteBoard}
 					/>
 					<DragDropContext onDragEnd={this.handleDragEnd}>
-						<Container>
-							<BoardsContainer className="hidden-scroll">
-								{data.boardOrder.map((boardId) => {
-									const board = data.boards[boardId];
-									const content = board.contentIds.map(
-										(contentId) => data.content[contentId]
-									);
-									return (
-										<Board
-											key={board.id}
-											board={board}
-											content={content}
-										/>
-									);
-								})}
-							</BoardsContainer>
-						</Container>
+						<Droppable
+							droppableId="boardsContainer"
+							direction="horizontal"
+							type="board"
+						>
+							{(provided) => (
+								<Container>
+									<BoardsContainer
+										className="hidden-scroll"
+										ref={provided.innerRef}
+										{...provided.innerRef}
+									>
+										{data.boardOrder.map(
+											(boardId, index) => {
+												const board =
+													data.boards[boardId];
+												const content =
+													board.contentIds.map(
+														(contentId) =>
+															data.content[
+																contentId
+															]
+													);
+												return (
+													<Board
+														index={index}
+														key={board.id}
+														board={board}
+														content={content}
+													/>
+												);
+											}
+										)}
+										{provided.placeholder}
+									</BoardsContainer>
+								</Container>
+							)}
+						</Droppable>
 					</DragDropContext>
 				</>
 			);

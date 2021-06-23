@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Droppable } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import Card from './Card';
 
@@ -34,33 +34,50 @@ const CardsContainer = styled.div`
 export class Board extends Component {
 	render() {
 		return (
-			<Container>
-				<Title>{this.props.board.title}</Title>
-				<Droppable droppableId={this.props.board.id}>
-					{(provided, snapshot) => {
-						return (
-							<CardsContainer
-								ref={provided.innerRef}
-								{...provided.droppableProps}
-								isDraggingOver={snapshot.isDraggingOver}
-							>
-								{this.props.content.map((content, index) =>
-									content ? (
-										<Card
-											key={content.id}
-											content={content}
-											index={index}
-										/>
-									) : (
-										''
-									)
-								)}
-								{provided.placeholder}
-							</CardsContainer>
-						);
-					}}
-				</Droppable>
-			</Container>
+			<Draggable
+				draggableId={this.props.board.id}
+				index={this.props.index}
+			>
+				{(provided) => {
+					return (
+						<Container
+							{...provided.draggableProps}
+							ref={provided.innerRef}
+						>
+							<Title {...provided.dragHandleProps}>
+								{this.props.board.title}
+							</Title>
+							<Droppable droppableId={this.props.board.id}>
+								{(provided, snapshot) => {
+									return (
+										<CardsContainer
+											ref={provided.innerRef}
+											{...provided.droppableProps}
+											isDraggingOver={
+												snapshot.isDraggingOver
+											}
+										>
+											{this.props.content.map(
+												(content, index) =>
+													content ? (
+														<Card
+															key={content.id}
+															content={content}
+															index={index}
+														/>
+													) : (
+														''
+													)
+											)}
+											{provided.placeholder}
+										</CardsContainer>
+									);
+								}}
+							</Droppable>
+						</Container>
+					);
+				}}
+			</Draggable>
 		);
 	}
 }
