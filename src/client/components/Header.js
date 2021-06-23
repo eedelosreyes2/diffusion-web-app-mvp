@@ -1,31 +1,40 @@
 import React, { Component } from 'react';
+import LogOutComponent from './LogOutComponent';
 import styled from 'styled-components';
 import { colors } from '../../theme';
 
 const Container = styled.div`
 	display: flex;
 	height: 100px;
-	justify-content: space-around;
-	width: 100%;
+	justify-content: space-between;
+	margin: 0 auto;
+	width: 90%;
 `;
 
 const H1 = styled.h1`
 	color: #00b1d2;
 	margin: auto;
+	text-align: center;
+	width: 50%;
 `;
 
 const ButtonsContainer = styled.div`
 	display: flex;
+	justify-content: ${(props) =>
+		props.type === 'logout' ? 'flex-start' : 'flex-end'};
 	margin: auto;
-	width: 300px;
+	width: 25%;
 `;
 
 const Button = styled.div`
 	background-color: ${(props) =>
 		props.type === 'create' ? colors.green : colors.secondary};
 	border-radius: 15px;
-	height: 40px;
+	cursor: pointer;
+	height: 35px;
 	margin-left: 30px;
+	padding-top: 15px;
+	text-align: center;
 	width: 90px;
 `;
 
@@ -35,13 +44,17 @@ export default class Header extends Component {
 
 		return (
 			<Container>
-				<ButtonsContainer></ButtonsContainer>
+				<ButtonsContainer type="logout">
+					<LogOutComponent
+						responseGoogleLogout={this.props.responseGoogleLogout}
+					/>
+				</ButtonsContainer>
 				<H1>{`Hello ${givenName} ${familyName}!`}</H1>
 				<ButtonsContainer>
 					<Button type="create" onClick={this.props.createBoard}>
-						Create Board
+						Create
 					</Button>
-					<Button onClick={this.props.createBoard}>Edit Baord</Button>
+					<Button onClick={this.props.createBoard}>Edit</Button>
 				</ButtonsContainer>
 			</Container>
 		);

@@ -142,9 +142,6 @@ export default class App extends Component {
 							updateBoards={this.updateBoards}
 							responseGoogleLogout={this.responseGoogleLogout}
 						/>
-						<LogOutComponent
-							responseGoogleLogout={this.responseGoogleLogout}
-						/>
 					</>
 				) : (
 					<>
