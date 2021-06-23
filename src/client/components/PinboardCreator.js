@@ -47,10 +47,16 @@ export default class PinboardCreator extends Component {
 			return;
 		}
 
-		// Dragging Content between Boards
 		const start = this.props.data.boards[source.droppableId];
 		const finish = this.props.data.boards[destination.droppableId];
 
+		// If more than 5 in finish board, do not drop
+		if (start !== finish && finish.contentIds.length > 5) {
+			alert('You can only have up to 5 pieces of Content in a Board!');
+			return;
+		}
+
+		// Dragging Content within Board
 		if (start === finish) {
 			const newContentIds = Array.from(start.contentIds);
 			newContentIds.splice(source.index, 1);
@@ -76,7 +82,7 @@ export default class PinboardCreator extends Component {
 			return;
 		}
 
-		// Dragging Content within Board
+		// Dragging Content between Boards
 		const startContentIds = Array.from(start.contentIds);
 		startContentIds.splice(source.index, 1);
 		const newStart = {
