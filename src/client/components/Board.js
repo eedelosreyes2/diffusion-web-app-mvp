@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
+import { colors } from '../../theme';
 import Card from './Card';
 
 const Container = styled.div`
-	background-color: ${(props) => (props.isDragging ? 'lightblue' : 'white')};
-	border: 2px solid #00b1d2;
+	background-color: ${(props) =>
+		props.boardId === 'board0'
+			? colors.primary
+			: props.isDragging
+			? 'lightblue'
+			: 'white'};
+	border: 2px solid ${colors.primary};
 	border-radius: 15px;
 	display: flex;
 	flex-direction: column;
-	margin: 15px;
-	padding: 0 5px;
+	margin: 5px;
+	padding: 0 5px 5px 5px;
 	width 300px;
 `;
 
@@ -44,6 +50,7 @@ export class Board extends Component {
 				{(provided, snapshot) => {
 					return (
 						<Container
+							boardId={this.props.board.id}
 							{...provided.draggableProps}
 							ref={provided.innerRef}
 							isDragging={snapshot.isDragging}
