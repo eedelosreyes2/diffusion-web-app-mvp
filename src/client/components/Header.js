@@ -8,7 +8,7 @@ const Container = styled.div`
 	height: 100px;
 	justify-content: space-between;
 	margin: 0 auto;
-	width: 90%;
+	width: 85%;
 `;
 
 const H1 = styled.h1`
@@ -28,12 +28,12 @@ const ButtonsContainer = styled.div`
 
 const Button = styled.div`
 	background-color: ${(props) =>
-		props.type === 'create' ? colors.green : 'red'};
+		props.type === 'board' ? colors.green : colors.secondary};
 	border-radius: 15px;
 	cursor: pointer;
 	font-weight: bold;
 	height: 35px;
-	margin-left: 30px;
+	margin-left: 10px;
 	padding: 15px 20px 0 20px;
 	text-align: center;
 	// width: 90px;
@@ -52,10 +52,12 @@ export default class Header extends Component {
 				</ButtonsContainer>
 				<H1>{`Hello ${givenName} ${familyName}!`}</H1>
 				<ButtonsContainer>
-					<Button type="create" onClick={this.props.createBoard}>
-						Create Board
+					<Button type="content" onClick={this.props.createBoard}>
+						+ Content
 					</Button>
-					{/* <Button onClick={this.props.deleteBoard}>Delete</Button> */}
+					<Button type="board" onClick={this.props.createBoard}>
+						+ Board
+					</Button>
 				</ButtonsContainer>
 			</Container>
 		);
