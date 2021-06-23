@@ -15,6 +15,7 @@ export default class App extends Component {
 		this.getCache();
 		window.addEventListener('load', this.getCache);
 		window.addEventListener('beforeunload', this.setCache);
+		setInterval(() => this.fetchNewBoards(), 1000);
 	};
 
 	componentWillUnmount = () => {
@@ -59,21 +60,50 @@ export default class App extends Component {
 	putBoards = async () => {
 		let url = DB_URL + this.state.username + '/data.json';
 		const { data } = this.state;
+		data.newContent = null;
 
-		this.fetchNewBoards();
-
-		// axios.put(url, data, { headers: { 'Content-Type': 'text/plain' } });
+		axios.put(url, data, { headers: { 'Content-Type': 'text/plain' } });
 	};
 
 	fetchNewBoards = async () => {
 		let url = DB_URL + this.state.username + '/data/newContent.json';
+
 		axios.get(url).then((res) => {
 			const { data } = res;
 			if (data) {
 				Object.entries(data).map((newContent) => {
 					const { url, quickThoughts, category } = newContent[1];
-					console.log(url, quickThoughts, category);
-					// this.state.data.content
+					const id = uuidv4();
+					const newCard = {
+						id,
+						url,
+						quickThoughts,
+						category,
+					};
+					const content = {
+						...this.state.data.content,
+						[newCard.id]: newCard,
+					};
+					const board0 = {
+						...this.state.data.boards.board0,
+						contentIds: [
+							...this.state.data.boards.board0.contentIds,
+							id,
+						],
+					};
+					const boards = {
+						...this.state.data.boards,
+						board0,
+					};
+					const newState = {
+						...this.state,
+						data: {
+							...this.state.data,
+							content,
+							boards,
+						},
+					};
+					this.setState(newState);
 				});
 			}
 		});

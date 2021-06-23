@@ -27,8 +27,8 @@
 			}
 		},
 		"boards": {
-			"board-1": {
-				"id": "board-1",
+			"board0": {
+				"id": "board0",
 				"title": "New Board",
 				"contentIds": [
 					"content-1",
@@ -38,22 +38,27 @@
 					0
 				]
 			},
-			"board-2": {
-				"id": "board-2",
+			"board1": {
+				"id": "board1",
+				"title": "Random Board",
+				"contentIds": [0]
+			},
+			"board2": {
+				"id": "board2",
 				"title": "First Board OMG",
 				"contentIds": [0]
 			},
-			"board-3": {
-				"id": "board-3",
+			"board3": {
+				"id": "board3",
 				"title": "Best clothes ever bitch",
 				"contentIds": [0]
 			},
-			"board-4": {
-				"id": "board-4",
+			"board4": {
+				"id": "board4",
 				"title": "Some great content  wow",
 				"contentIds": [0]
 			}
 		},
-		"boardOrder": ["board-1", "board-2", "board-3", "board-4"]
+		"boardOrder": ["board0", "board1", "board2", "board3", "board4"]
 	}
 }
