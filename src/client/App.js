@@ -3,7 +3,6 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import PinboardCreator from './components/PinboardCreator';
 import LogInComponent from './components/LogInComponent';
-import LogOutComponent from './components/LogOutComponent';
 import './app.css';
 const DB_URL = 'https://diffusion-web-app-mvp-default-rtdb.firebaseio.com/';
 

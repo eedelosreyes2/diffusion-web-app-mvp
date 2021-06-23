@@ -28,14 +28,15 @@ const ButtonsContainer = styled.div`
 
 const Button = styled.div`
 	background-color: ${(props) =>
-		props.type === 'create' ? colors.green : colors.secondary};
+		props.type === 'create' ? colors.green : 'red'};
 	border-radius: 15px;
 	cursor: pointer;
+	font-weight: bold;
 	height: 35px;
 	margin-left: 30px;
-	padding-top: 15px;
+	padding: 15px 20px 0 20px;
 	text-align: center;
-	width: 90px;
+	// width: 90px;
 `;
 
 export default class Header extends Component {
@@ -52,9 +53,9 @@ export default class Header extends Component {
 				<H1>{`Hello ${givenName} ${familyName}!`}</H1>
 				<ButtonsContainer>
 					<Button type="create" onClick={this.props.createBoard}>
-						Create
+						Create Board
 					</Button>
-					<Button onClick={this.props.createBoard}>Edit</Button>
+					{/* <Button onClick={this.props.deleteBoard}>Delete</Button> */}
 				</ButtonsContainer>
 			</Container>
 		);

@@ -89,6 +89,10 @@ export default class PinboardCreator extends Component {
 		console.log('OKOK');
 	};
 
+	deleteBoard = () => {
+		console.log('Delete');
+	};
+
 	render() {
 		const { profileObj, data } = this.props;
 
@@ -99,6 +103,7 @@ export default class PinboardCreator extends Component {
 						profileObj={profileObj}
 						responseGoogleLogout={this.props.responseGoogleLogout}
 						createBoard={this.createBoard}
+						deleteBoard={this.deleteBoard}
 					/>
 					<DragDropContext onDragEnd={this.handleDragEnd}>
 						<Container>
