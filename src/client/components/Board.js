@@ -17,8 +17,7 @@ const Container = styled.div`
 			: 'white'};
 	border: 2px solid ${colors.primary};
 	border-radius: 15px;
-	display: flex;
-	flex-direction: column;
+	display: block;
 	margin: 5px;
 	padding: 0 5px 5px 5px;
 	position: relative;
@@ -27,7 +26,6 @@ const Container = styled.div`
 
 const Handle = styled.div`
 	background-color: ${colors.primary};
-	border: 2px solid ${colors.primary};
 	border-bottom-left-radius: 15px;
 	border-bottom-right-radius: 15px;
 	color: white;
@@ -56,7 +54,7 @@ const CardsContainer = styled.div`
 	border-radius: 15px;
 	display: flex;
 	flex-direction: column;
-	flex-grow: 1;
+	// flex-grow: 1;
 	margin: 0 auto 10px auto;
 	width: 100%;
 `;
@@ -76,15 +74,19 @@ const Footer = styled.div`
 
 export class Board extends Component {
 	render() {
+		const { id, title } = this.props.board;
+		const isDragDisabled = id === 'board0';
+
 		return (
 			<Draggable
-				draggableId={this.props.board.id}
+				isDragDisabled={isDragDisabled}
+				draggableId={id}
 				index={this.props.index}
 			>
 				{(provided, snapshot) => {
 					return (
 						<Container
-							boardId={this.props.board.id}
+							boardId={id}
 							{...provided.draggableProps}
 							ref={provided.innerRef}
 							isDragging={snapshot.isDragging}
@@ -96,18 +98,13 @@ export class Board extends Component {
 									<HiOutlineDotsHorizontal />
 								</IconContext.Provider>
 							</Handle>
-							<Title isDragging={snapshot.isDragging}>
-								{this.props.board.title}
-							</Title>
-							<Droppable droppableId={this.props.board.id}>
-								{(provided, snapshot) => {
+							<Title>{title}</Title>
+							<Droppable droppableId={id}>
+								{(provided) => {
 									return (
 										<CardsContainer
 											ref={provided.innerRef}
 											{...provided.droppableProps}
-											isDraggingOver={
-												snapshot.isDraggingOver
-											}
 										>
 											{this.props.content.map(
 												(content, index) =>
@@ -126,16 +123,29 @@ export class Board extends Component {
 									);
 								}}
 							</Droppable>
-							<Footer boardId={this.props.board.id}>
-								<FiEdit2 />
+							<Footer boardId={id}>
+								<IconContext.Provider
+									value={{ style: { cursor: 'pointer' } }}
+								>
+									<FiEdit2 />
+								</IconContext.Provider>
 								<IconContext.Provider
 									value={{
 										size: '2em',
+										style: { cursor: 'pointer' },
 									}}
 								>
 									<BsArrowClockwise />
 								</IconContext.Provider>
-								<FiTrash />
+								<IconContext.Provider
+									value={{ style: { cursor: 'pointer' } }}
+								>
+									<FiTrash
+										onClick={() =>
+											this.props.deleteBoard(id)
+										}
+									/>
+								</IconContext.Provider>
 							</Footer>
 						</Container>
 					);

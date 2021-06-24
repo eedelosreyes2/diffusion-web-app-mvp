@@ -46,14 +46,16 @@ export default class PinboardCreator extends Component {
 
 			this.props.updateBoards(newState);
 			return;
+
+			// Trying to reoder New Board
 		}
 
 		const start = this.props.data.boards[source.droppableId];
 		const finish = this.props.data.boards[destination.droppableId];
 
-		// If more than 5 in finish board, do not drop
+		// If more than 5 in finish board, do not drop Content
 		if (start !== finish && finish.contentIds.length > 5) {
-			alert('You can only have up to 5 pieces of Content in a Board!');
+			// alert('You can only have up to 5 pieces of Content in a Board!');
 			return;
 		}
 
@@ -139,6 +141,10 @@ export default class PinboardCreator extends Component {
 		this.props.updateBoards(newState);
 	};
 
+	deleteBoard = (boardId) => {
+		console.log(boardId);
+	};
+
 	createContent = () => {
 		const url = prompt('Enter the url: ');
 		const quickThoughts = prompt('Enter Quick Thoughts: ');
@@ -191,13 +197,12 @@ export default class PinboardCreator extends Component {
 							direction="horizontal"
 							type="board"
 						>
-							{(provided, snapshot) => (
+							{(provided) => (
 								<Container>
 									<BoardsContainer
 										className="hidden-scroll"
 										ref={provided.innerRef}
 										{...provided.innerRef}
-										isDraggingOver={snapshot.isDraggingOver}
 									>
 										{data.boardOrder.map(
 											(boardId, index) => {
@@ -216,6 +221,9 @@ export default class PinboardCreator extends Component {
 														key={board.id}
 														board={board}
 														content={content}
+														deleteBoard={
+															this.deleteBoard
+														}
 													/>
 												);
 											}
