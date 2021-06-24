@@ -21,7 +21,7 @@ const H1 = styled.h1`
 const ButtonsContainer = styled.div`
 	display: flex;
 	justify-content: ${(props) =>
-		props.type === 'logout' ? 'flex-start' : 'flex-end'};
+		props.type === 'logout' ? 'flex-end' : 'flex-start'};
 	margin: auto;
 	width: 25%;
 `;
@@ -34,9 +34,8 @@ const Button = styled.div`
 	font-weight: bold;
 	height: 35px;
 	margin-left: 10px;
-	padding: 15px 20px 0 20px;
+	padding: 15px 15px 0 15px;
 	text-align: center;
-	// width: 90px;
 `;
 
 export default class Header extends Component {
@@ -45,19 +44,19 @@ export default class Header extends Component {
 
 		return (
 			<Container>
+				<ButtonsContainer>
+					<Button type="board" onClick={this.props.createBoard}>
+						+Board
+					</Button>
+					<Button type="content" onClick={this.props.createContent}>
+						+Content
+					</Button>
+				</ButtonsContainer>
+				<H1>{`Hello ${givenName} ${familyName}!`}</H1>
 				<ButtonsContainer type="logout">
 					<LogOutComponent
 						responseGoogleLogout={this.props.responseGoogleLogout}
 					/>
-				</ButtonsContainer>
-				<H1>{`Hello ${givenName} ${familyName}!`}</H1>
-				<ButtonsContainer>
-					<Button type="content" onClick={this.props.createBoard}>
-						+ Content
-					</Button>
-					<Button type="board" onClick={this.props.createBoard}>
-						+ Board
-					</Button>
 				</ButtonsContainer>
 			</Container>
 		);

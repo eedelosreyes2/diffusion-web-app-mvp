@@ -3,6 +3,8 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import { colors } from '../../theme';
 import Card from './Card';
+import { IconContext } from 'react-icons/lib';
+import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 
 const Container = styled.div`
 	background-color: ${(props) =>
@@ -19,6 +21,26 @@ const Container = styled.div`
 	padding: 0 5px 5px 5px;
 	width 300px;
 `;
+
+const Handle = styled.div`
+	background-color: ${colors.primary};
+	border: 2px solid ${colors.primary};
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+	color: white;
+	height: 0px;
+	margin: auto;
+	padding-bottom: 16px;
+	position: absoulte;
+	text-align: center;
+	top: 0;
+	width: 70%;
+`;
+
+const iconStyle = {
+	// backgroundColor: 'red',
+	top: 0,
+};
 
 const Title = styled.div`
 	font-size: 24px;
@@ -55,10 +77,14 @@ export class Board extends Component {
 							ref={provided.innerRef}
 							isDragging={snapshot.isDragging}
 						>
-							<Title
-								{...provided.dragHandleProps}
-								isDragging={snapshot.isDragging}
-							>
+							<Handle {...provided.dragHandleProps}>
+								<IconContext.Provider
+									value={{ style: iconStyle }}
+								>
+									<HiOutlineDotsHorizontal />
+								</IconContext.Provider>
+							</Handle>
+							<Title isDragging={snapshot.isDragging}>
 								{this.props.board.title}
 							</Title>
 							<Droppable droppableId={this.props.board.id}>

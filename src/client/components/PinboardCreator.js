@@ -112,12 +112,12 @@ export default class PinboardCreator extends Component {
 		this.props.updateBoards(newState);
 	};
 
-	createBoard = () => {
-		console.log('OKOK');
+	createContent = () => {
+		console.log('Content');
 	};
 
-	deleteBoard = () => {
-		console.log('Delete');
+	createBoard = () => {
+		console.log('Board');
 	};
 
 	render() {
@@ -129,8 +129,8 @@ export default class PinboardCreator extends Component {
 					<Header
 						profileObj={profileObj}
 						responseGoogleLogout={this.props.responseGoogleLogout}
+						createContent={this.createContent}
 						createBoard={this.createBoard}
-						deleteBoard={this.deleteBoard}
 					/>
 					<DragDropContext onDragEnd={this.handleDragEnd}>
 						<Droppable
