@@ -140,7 +140,37 @@ export default class PinboardCreator extends Component {
 	};
 
 	createContent = () => {
-		console.log('Content');
+		const url = prompt('Enter the url: ');
+		const quickThoughts = prompt('Enter Quick Thoughts: ');
+		const category = prompt('Enter category: '); // this would be from a dropdownlist
+		const id = uuidv4();
+		const newCard = {
+			id,
+			url,
+			quickThoughts,
+			category,
+		};
+		const content = {
+			...this.props.data.content,
+			[newCard.id]: newCard,
+		};
+		const board0 = {
+			...this.props.data.boards.board0,
+			contentIds: [...this.props.data.boards.board0.contentIds, id],
+		};
+		const boards = {
+			...this.props.data.boards,
+			board0,
+		};
+		const newState = {
+			...this.props,
+			data: {
+				...this.props.data,
+				content,
+				boards,
+			},
+		};
+		this.props.updateBoards(newState);
 	};
 
 	render() {
