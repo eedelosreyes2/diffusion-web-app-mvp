@@ -5,6 +5,8 @@ import { colors } from '../../theme';
 import Card from './Card';
 import { IconContext } from 'react-icons/lib';
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
+import { FiEdit2, FiTrash } from 'react-icons/fi';
+import { BsArrowClockwise } from 'react-icons/bs';
 
 const Container = styled.div`
 	background-color: ${(props) =>
@@ -19,6 +21,7 @@ const Container = styled.div`
 	flex-direction: column;
 	margin: 5px;
 	padding: 0 5px 5px 5px;
+	position: relative;
 	width 300px;
 `;
 
@@ -38,28 +41,37 @@ const Handle = styled.div`
 `;
 
 const iconStyle = {
-	// backgroundColor: 'red',
 	top: 0,
 };
 
 const Title = styled.div`
 	font-size: 24px;
-	height: 50px;
-	margin-top: 20px;
+	margin-top: 10px;
 	text-align: center;
 	width: 100%;
 `;
 
 const CardsContainer = styled.div`
 	align-items: center;
-	// background-color: ${(props) =>
-		props.isDraggingOver ? 'grey' : 'white'};
 	border-radius: 15px;
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
-	margin: auto;
+	margin: 0 auto 10px auto;
 	width: 100%;
+`;
+
+const Footer = styled.div`
+	align-items: center;
+	bottom: 0;
+	color: ${(props) => (props.boardId === 'board0' ? 'white' : 'black')};
+	display: flex;
+	flex-direction: row;
+	height: 35px;
+	justify-content: space-evenly;
+	left: 0,
+	position: absolute;
+	right: 0;
 `;
 
 export class Board extends Component {
@@ -114,6 +126,17 @@ export class Board extends Component {
 									);
 								}}
 							</Droppable>
+							<Footer boardId={this.props.board.id}>
+								<FiEdit2 />
+								<IconContext.Provider
+									value={{
+										size: '2em',
+									}}
+								>
+									<BsArrowClockwise />
+								</IconContext.Provider>
+								<FiTrash />
+							</Footer>
 						</Container>
 					);
 				}}
