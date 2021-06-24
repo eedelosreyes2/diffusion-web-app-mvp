@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Header from './Header';
 import Board from './Board';
@@ -112,12 +113,34 @@ export default class PinboardCreator extends Component {
 		this.props.updateBoards(newState);
 	};
 
-	createContent = () => {
-		console.log('Content');
+	createBoard = () => {
+		const title = prompt('What is the title of the board?');
+		const id = uuidv4();
+		const newBoard = {
+			id,
+			title,
+			contentIds: [0],
+		};
+		const newBoardOrder = Array.from(this.props.data.boardOrder);
+		newBoardOrder.splice(1, 0, id);
+
+		const newState = {
+			...this.props,
+			data: {
+				...this.props.data,
+				boards: {
+					...this.props.data.boards,
+					[newBoard.id]: newBoard,
+				},
+				boardOrder: newBoardOrder,
+			},
+		};
+
+		this.props.updateBoards(newState);
 	};
 
-	createBoard = () => {
-		console.log('Board');
+	createContent = () => {
+		console.log('Content');
 	};
 
 	render() {
@@ -129,8 +152,8 @@ export default class PinboardCreator extends Component {
 					<Header
 						profileObj={profileObj}
 						responseGoogleLogout={this.props.responseGoogleLogout}
-						createContent={this.createContent}
 						createBoard={this.createBoard}
+						createContent={this.createContent}
 					/>
 					<DragDropContext onDragEnd={this.handleDragEnd}>
 						<Droppable
