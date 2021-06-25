@@ -59,26 +59,6 @@ export default class PinboardCreator extends Component {
 		)
 			return;
 
-		// Dragging from New Content Droppable (board0)
-		if (source.droppableId === 'new-content') {
-			console.log('INDISDE');
-
-			return;
-		}
-
-		// Dragging into New Content Droppable (board0)
-		if (destination.droppableId === 'new-content') {
-			console.log(draggableId);
-			return;
-		}
-
-		// Trash
-		if (destination.droppableId === 'trash') {
-			this.deleteContent(draggableId);
-			console.log('tras');
-			return;
-		}
-
 		// Dragging Boards
 		if (type === 'board') {
 			const newBoardOrder = Array.from(this.props.data.boardOrder);
@@ -95,18 +75,23 @@ export default class PinboardCreator extends Component {
 
 			this.props.updateBoards(newState);
 			return;
-
-			// Trying to reoder New Board
 		}
 
-		const start = this.props.data.boards[source.droppableId];
-		const finish = this.props.data.boards[destination.droppableId];
+		// Dragging Content into Trash
+		if (destination.droppableId === 'trash') {
+			this.deleteContent(draggableId);
+			console.log('tras');
+			return;
+		}
+
+		const start = this.props.data.boards[source.droppableId]; // Start Board
+		const finish = this.props.data.boards[destination.droppableId]; // Finish Board
 
 		// If more than 5 in finish board, do not drop Content
-		// if (start !== finish && finish.contentIds.length > 5) {
-		// 	// alert('You can only have up to 5 pieces of Content in a Board!');
-		// 	return;
-		// }
+		if (start !== finish && finish.contentIds.length > 5) {
+			// alert('You can only have up to 5 pieces of Content in a Board!');
+			return;
+		}
 
 		// Dragging Content within Board
 		if (start === finish) {
@@ -229,18 +214,10 @@ export default class PinboardCreator extends Component {
 	};
 
 	deleteContent = (draggableId) => {
-		console.log(draggableId);
-		// remove from content list
-		// const newContent = Array.from(this.props.data.content);
-		const newContent = Object.entries(this.props.data.content);
-		console.log(newContent);
-
 		const { content } = this.props.data;
-		console.log(content);
-
 		content[draggableId] = '';
 
-		console.log(content);
+		// remove from contentIds
 
 		const newState = {
 			...this.props,
@@ -248,8 +225,6 @@ export default class PinboardCreator extends Component {
 		};
 
 		this.props.updateBoards(newState);
-
-		// remove from board: contentIds
 	};
 
 	render() {

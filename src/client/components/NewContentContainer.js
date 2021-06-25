@@ -37,7 +37,7 @@ export default class NewContentContainer extends Component {
 
 		return (
 			<Container>
-				<Droppable droppableId="new-content" direction="horizontal">
+				<Droppable droppableId="board0" direction="horizontal">
 					{(provided) => {
 						return (
 							<CardsContainer
