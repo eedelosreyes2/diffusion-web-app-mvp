@@ -75,14 +75,9 @@ const Footer = styled.div`
 export class Board extends Component {
 	render() {
 		const { id, title } = this.props.board;
-		const isDragDisabled = id === 'board0';
 
 		return (
-			<Draggable
-				isDragDisabled={isDragDisabled}
-				draggableId={id}
-				index={this.props.index}
-			>
+			<Draggable draggableId={id} index={this.props.index}>
 				{(provided, snapshot) => {
 					return (
 						<Container

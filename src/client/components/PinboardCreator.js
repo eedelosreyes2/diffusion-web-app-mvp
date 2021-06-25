@@ -4,15 +4,35 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Header from './Header';
 import Board from './Board';
 import styled from 'styled-components';
+import { colors } from '../../theme';
 
 const Container = styled.div`
-	margin: 0 auto;
-	width: 85%;
+	display: flex;
+	height: 100vh;
+`;
+
+const NewContentContainer = styled.div`
+	background-color: white;
+	border-bottom: 2px solid ${colors.secondary};
+	border-right: 2px solid ${colors.secondary};
+	border-top: 2px solid ${colors.secondary};
+	border-bottom-right-radius: 15px;
+	border-top-right-radius: 15px;
+	height: 99%;
+	margin: auto 0;
+	width: 600px;
+`;
+
+const HeaderAndBoardsContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	overflow: auto;
 `;
 
 const BoardsContainer = styled.div`
 	display: flex;
 	justify-content: left;
+	height: 600px;
 	margin: 0 auto;
 	overflow: auto;
 	width: 100%;
@@ -185,12 +205,12 @@ export default class PinboardCreator extends Component {
 		if (data) {
 			return (
 				<>
-					<Header
+					{/* <Header
 						profileObj={profileObj}
 						responseGoogleLogout={this.props.responseGoogleLogout}
 						createBoard={this.createBoard}
 						createContent={this.createContent}
-					/>
+					/> */}
 					<DragDropContext onDragEnd={this.handleDragEnd}>
 						<Droppable
 							droppableId="boardsContainer"
@@ -199,37 +219,48 @@ export default class PinboardCreator extends Component {
 						>
 							{(provided) => (
 								<Container>
-									<BoardsContainer
-										className="hidden-scroll"
-										ref={provided.innerRef}
-										{...provided.innerRef}
-									>
-										{data.boardOrder.map(
-											(boardId, index) => {
-												const board =
-													data.boards[boardId];
-												const content =
-													board.contentIds.map(
-														(contentId) =>
-															data.content[
-																contentId
-															]
-													);
-												return (
-													<Board
-														index={index}
-														key={board.id}
-														board={board}
-														content={content}
-														deleteBoard={
-															this.deleteBoard
-														}
-													/>
-												);
+									<NewContentContainer></NewContentContainer>
+									<HeaderAndBoardsContainer>
+										<Header
+											profileObj={profileObj}
+											responseGoogleLogout={
+												this.props.responseGoogleLogout
 											}
-										)}
-										{provided.placeholder}
-									</BoardsContainer>
+											createBoard={this.createBoard}
+											createContent={this.createContent}
+										/>
+										<BoardsContainer
+											className="hidden-scroll"
+											ref={provided.innerRef}
+											{...provided.innerRef}
+										>
+											{data.boardOrder.map(
+												(boardId, index) => {
+													const board =
+														data.boards[boardId];
+													const content =
+														board.contentIds.map(
+															(contentId) =>
+																data.content[
+																	contentId
+																]
+														);
+													return (
+														<Board
+															index={index}
+															key={board.id}
+															board={board}
+															content={content}
+															deleteBoard={
+																this.deleteBoard
+															}
+														/>
+													);
+												}
+											)}
+											{provided.placeholder}
+										</BoardsContainer>
+									</HeaderAndBoardsContainer>
 								</Container>
 							)}
 						</Droppable>

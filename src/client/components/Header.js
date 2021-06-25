@@ -5,10 +5,10 @@ import { colors } from '../../theme';
 
 const Container = styled.div`
 	display: flex;
-	height: 100px;
+	height: 10vh;
 	justify-content: space-between;
 	margin: 0 auto;
-	width: 85%;
+	width: 100%;
 `;
 
 const H1 = styled.h1`

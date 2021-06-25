@@ -9,7 +9,7 @@ const Container = styled.div`
 	border-radius: 5px;
 	margin: 5px;
 	min-height: 50px;
-	width: 290px;
+	width: 250px;
 `;
 
 const Url = styled.div`
@@ -27,11 +27,10 @@ const Category = styled.div`
 
 export class Card extends Component {
 	render() {
+		const { id, url, quickThoughts, category } = this.props.content;
+
 		return (
-			<Draggable
-				draggableId={this.props.content.id}
-				index={this.props.index}
-			>
+			<Draggable draggableId={id} index={this.props.index}>
 				{(provided, snapshot) => {
 					return (
 						<Container
@@ -41,19 +40,17 @@ export class Card extends Component {
 							isDragging={snapshot.isDragging}
 						>
 							<Url>
-								{
-									this.props.content.url
-										.replace(
-											/^(?:https?:\/\/)?(?:www\.)?/i,
-											''
-										)
-										.split('/')[0]
-								}
+								{url
+									? url
+											.replace(
+												/^(?:https?:\/\/)?(?:www\.)?/i,
+												''
+											)
+											.split('/')[0]
+									: ''}
 							</Url>
-							<QuickThoughts>
-								{this.props.content.quickThoughts}
-							</QuickThoughts>
-							<Category>{this.props.content.category}</Category>
+							<QuickThoughts>{quickThoughts}</QuickThoughts>
+							<Category>{category}</Category>
 						</Container>
 					);
 				}}
