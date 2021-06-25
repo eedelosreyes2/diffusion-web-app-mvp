@@ -5,7 +5,6 @@ import NewContentContainer from './NewContentContainer';
 import Header from './Header';
 import Board from './Board';
 import styled from 'styled-components';
-import { colors } from '../../theme';
 
 const Container = styled.div`
 	display: flex;
@@ -21,7 +20,6 @@ const HeaderAndBoardsContainer = styled.div`
 
 const BoardsContainer = styled.div`
 	display: flex;
-	height: 600px;
 	margin: 0 auto;
 	overflow: auto;
 	width: 100%;
@@ -39,8 +37,15 @@ export default class PinboardCreator extends Component {
 		)
 			return;
 
-		// Dragging into New Content Container (board0)
-		if (destination.droppableId === 'new-content-container-droppable') {
+		// Dragging from New Content Droppable (board0)
+		if (source.droppableId === 'new-content-droppable') {
+			console.log('INDISDE');
+
+			return;
+		}
+
+		// Dragging into New Content Droppable (board0)
+		if (destination.droppableId === 'new-content-droppable') {
 			console.log(draggableId);
 			return;
 		}

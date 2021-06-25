@@ -5,32 +5,33 @@ import styled from 'styled-components';
 import { colors } from '../../theme';
 
 const Container = styled.div`
+	align-items: center;
 	background-color: white;
 	border: 2px solid ${colors.secondary};
 	border-radius: 15px;
-	height: 200px;
+	display: flex;
 	margin: 0 auto 10px auto;
+	padding: 10px 5px;
 	width: 99%;
 `;
 
 const CardsContainer = styled.div`
-	background-color: red;
-	height: 100%;
-	width: 100%;
+	display: flex;
+	flex-grow: 1;
 `;
 
 export default class NewContentContainer extends Component {
 	render() {
-		const { board0 } = this.props;
-		const content = board0.contentIds.map(
+		const content = this.props.board0.contentIds.map(
 			(contentId) => this.props.content[contentId]
 		);
 
-		console.log(content);
-
 		return (
 			<Container>
-				<Droppable droppableId="new-content-container-droppable">
+				<Droppable
+					droppableId="new-content-droppable"
+					direction="horizontal"
+				>
 					{(provided) => {
 						return (
 							<CardsContainer
