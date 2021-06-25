@@ -30,7 +30,7 @@ export default class NewContentContainer extends Component {
 	render() {
 		let content = [];
 		if (this.props.content) {
-			this.props.board0.contentIds.map(
+			content = this.props.board0.contentIds.map(
 				(contentId) => this.props.content[contentId]
 			);
 		}
