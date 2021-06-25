@@ -7,23 +7,30 @@ import { colors } from '../../theme';
 const Container = styled.div`
 	align-items: center;
 	background-color: white;
-	border: 2px solid ${colors.secondary};
-	border-radius: 15px;
+	// border: 2px solid black;
+	// border-radius: 15px;
+	border-bottom: 2px solid ${colors.secondary};
 	display: flex;
+	justify-content: space-between;
 	margin: 0 auto 10px auto;
 	padding: 10px 5px;
 	width: 99%;
 `;
 
 const CardsContainer = styled.div`
-	background-color: purple;
 	display: flex;
+	flex-grow: 1;
+	min-height: 100px;
 `;
 
 const TrashContainer = styled.div`
-	background-color: red;
-	height: 100%;
-	width: 400px;
+	background-color: ${(props) => (props.isDraggingOver ? 'red' : 'white')};
+	border: 2px solid red;
+	border-radius: 15px;
+	// height: 100%;
+	margin: 0 5px;
+	min-height: 100px;
+	width: 200px;
 `;
 
 export default class NewContentContainer extends Component {
@@ -61,11 +68,12 @@ export default class NewContentContainer extends Component {
 					}}
 				</Droppable>
 				<Droppable droppableId="trash">
-					{(provided) => {
+					{(provided, snapshot) => {
 						return (
 							<TrashContainer
 								ref={provided.innerRef}
 								{...provided.innerRef}
+								isDraggingOver={snapshot.isDraggingOver}
 							/>
 						);
 					}}

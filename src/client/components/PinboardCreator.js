@@ -9,7 +9,7 @@ import styled from 'styled-components';
 const Container = styled.div`
 	display: flex;
 	height: 100vh;
-	justify-content: left;
+	justify-content: center;
 `;
 
 const HeaderAndBoardsContainer = styled.div`
@@ -79,8 +79,7 @@ export default class PinboardCreator extends Component {
 
 		// Dragging Content into Trash
 		if (destination.droppableId === 'trash') {
-			this.deleteContent(draggableId);
-			console.log('tras');
+			this.deleteContent(draggableId, source);
 			return;
 		}
 
@@ -213,11 +212,11 @@ export default class PinboardCreator extends Component {
 		this.props.updateBoards(newState);
 	};
 
-	deleteContent = (draggableId) => {
+	deleteContent = (draggableId, source) => {
 		const { content } = this.props.data;
 		content[draggableId] = '';
 
-		// remove from contentIds
+		// remove from contentIds from board PLS
 
 		const newState = {
 			...this.props,
