@@ -17,7 +17,8 @@ const Container = styled.div`
 			: 'white'};
 	border: 2px solid ${colors.primary};
 	border-radius: 15px;
-	display: block;
+	display: flex;
+	flex-direction: column;
 	margin: 5px;
 	padding: 0 5px 5px 5px;
 	position: relative;
@@ -54,7 +55,7 @@ const CardsContainer = styled.div`
 	border-radius: 15px;
 	display: flex;
 	flex-direction: column;
-	// flex-grow: 1;
+	flex-grow: 1;
 	margin: 0 auto 10px auto;
 	width: 100%;
 `;
@@ -62,7 +63,7 @@ const CardsContainer = styled.div`
 const Footer = styled.div`
 	align-items: center;
 	bottom: 0;
-	color: ${(props) => (props.boardId === 'board0' ? 'white' : 'black')};
+	color: 'black';
 	display: flex;
 	flex-direction: row;
 	height: 35px;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import NewContentContainer from './NewContentContainer';
 import Header from './Header';
 import Board from './Board';
 import styled from 'styled-components';
@@ -9,18 +10,7 @@ import { colors } from '../../theme';
 const Container = styled.div`
 	display: flex;
 	height: 100vh;
-`;
-
-const NewContentContainer = styled.div`
-	background-color: white;
-	border-bottom: 2px solid ${colors.secondary};
-	border-right: 2px solid ${colors.secondary};
-	border-top: 2px solid ${colors.secondary};
-	border-bottom-right-radius: 15px;
-	border-top-right-radius: 15px;
-	height: 99%;
-	margin: auto 0;
-	width: 600px;
+	justify-content: left;
 `;
 
 const HeaderAndBoardsContainer = styled.div`
@@ -31,7 +21,6 @@ const HeaderAndBoardsContainer = styled.div`
 
 const BoardsContainer = styled.div`
 	display: flex;
-	justify-content: left;
 	height: 600px;
 	margin: 0 auto;
 	overflow: auto;
@@ -49,6 +38,12 @@ export default class PinboardCreator extends Component {
 			destination.index === source.index
 		)
 			return;
+
+		// Dragging into New Content Container (board0)
+		if (destination.droppableId === 'new-content-container-droppable') {
+			console.log(draggableId);
+			return;
+		}
 
 		// Dragging Boards
 		if (type === 'board') {
@@ -74,10 +69,10 @@ export default class PinboardCreator extends Component {
 		const finish = this.props.data.boards[destination.droppableId];
 
 		// If more than 5 in finish board, do not drop Content
-		if (start !== finish && finish.contentIds.length > 5) {
-			// alert('You can only have up to 5 pieces of Content in a Board!');
-			return;
-		}
+		// if (start !== finish && finish.contentIds.length > 5) {
+		// 	// alert('You can only have up to 5 pieces of Content in a Board!');
+		// 	return;
+		// }
 
 		// Dragging Content within Board
 		if (start === finish) {
@@ -201,50 +196,49 @@ export default class PinboardCreator extends Component {
 
 	render() {
 		const { profileObj, data } = this.props;
+		const { board0 } = data.boards;
 
 		if (data) {
 			return (
-				<>
-					{/* <Header
-						profileObj={profileObj}
-						responseGoogleLogout={this.props.responseGoogleLogout}
-						createBoard={this.createBoard}
-						createContent={this.createContent}
-					/> */}
-					<DragDropContext onDragEnd={this.handleDragEnd}>
-						<Droppable
-							droppableId="boardsContainer"
-							direction="horizontal"
-							type="board"
-						>
-							{(provided) => (
-								<Container>
-									<NewContentContainer></NewContentContainer>
-									<HeaderAndBoardsContainer>
-										<Header
-											profileObj={profileObj}
-											responseGoogleLogout={
-												this.props.responseGoogleLogout
-											}
-											createBoard={this.createBoard}
-											createContent={this.createContent}
-										/>
-										<BoardsContainer
-											className="hidden-scroll"
-											ref={provided.innerRef}
-											{...provided.innerRef}
-										>
-											{data.boardOrder.map(
-												(boardId, index) => {
-													const board =
-														data.boards[boardId];
-													const content =
-														board.contentIds.map(
-															(contentId) =>
-																data.content[
-																	contentId
-																]
-														);
+				<DragDropContext onDragEnd={this.handleDragEnd}>
+					<Droppable
+						droppableId="boardsContainer"
+						direction="horizontal"
+						type="board"
+					>
+						{(provided) => (
+							<Container>
+								<HeaderAndBoardsContainer>
+									<Header
+										profileObj={profileObj}
+										responseGoogleLogout={
+											this.props.responseGoogleLogout
+										}
+										createBoard={this.createBoard}
+										createContent={this.createContent}
+									/>
+									<NewContentContainer
+										board0={board0}
+										content={data.content}
+									></NewContentContainer>
+									<BoardsContainer
+										className="hidden-scroll"
+										ref={provided.innerRef}
+										{...provided.innerRef}
+									>
+										{data.boardOrder.map(
+											(boardId, index) => {
+												const board =
+													data.boards[boardId];
+												const content =
+													board.contentIds.map(
+														(contentId) =>
+															data.content[
+																contentId
+															]
+													);
+
+												if (boardId !== 'board0') {
 													return (
 														<Board
 															index={index}
@@ -257,15 +251,16 @@ export default class PinboardCreator extends Component {
 														/>
 													);
 												}
-											)}
-											{provided.placeholder}
-										</BoardsContainer>
-									</HeaderAndBoardsContainer>
-								</Container>
-							)}
-						</Droppable>
-					</DragDropContext>
-				</>
+												return '';
+											}
+										)}
+										{provided.placeholder}
+									</BoardsContainer>
+								</HeaderAndBoardsContainer>
+							</Container>
+						)}
+					</Droppable>
+				</DragDropContext>
 			);
 		}
 		return <div></div>;

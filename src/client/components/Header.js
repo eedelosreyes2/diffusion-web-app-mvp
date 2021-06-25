@@ -6,9 +6,9 @@ import { colors } from '../../theme';
 const Container = styled.div`
 	display: flex;
 	height: 10vh;
-	justify-content: space-between;
+	// justify-content: space-between;
 	margin: 0 auto;
-	width: 100%;
+	width: 99%;
 `;
 
 const H1 = styled.h1`
@@ -28,12 +28,12 @@ const ButtonsContainer = styled.div`
 
 const Button = styled.div`
 	background-color: ${(props) =>
-		props.type === 'board' ? colors.green : colors.secondary};
+		props.type === 'board' ? colors.primary : colors.secondary};
 	border-radius: 15px;
 	cursor: pointer;
 	font-weight: bold;
 	height: 35px;
-	margin-left: 10px;
+	margin-right: 10px;
 	padding: 15px 15px 0 15px;
 	text-align: center;
 `;
