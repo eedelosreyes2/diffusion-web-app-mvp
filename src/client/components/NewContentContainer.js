@@ -16,22 +16,28 @@ const Container = styled.div`
 `;
 
 const CardsContainer = styled.div`
+	background-color: purple;
 	display: flex;
-	flex-grow: 1;
+`;
+
+const TrashContainer = styled.div`
+	background-color: red;
+	height: 100%;
+	width: 400px;
 `;
 
 export default class NewContentContainer extends Component {
 	render() {
-		const content = this.props.board0.contentIds.map(
-			(contentId) => this.props.content[contentId]
-		);
+		let content = [];
+		if (this.props.content) {
+			this.props.board0.contentIds.map(
+				(contentId) => this.props.content[contentId]
+			);
+		}
 
 		return (
 			<Container>
-				<Droppable
-					droppableId="new-content-droppable"
-					direction="horizontal"
-				>
+				<Droppable droppableId="new-content" direction="horizontal">
 					{(provided) => {
 						return (
 							<CardsContainer
@@ -51,6 +57,16 @@ export default class NewContentContainer extends Component {
 								})}
 								{provided.placeholder}
 							</CardsContainer>
+						);
+					}}
+				</Droppable>
+				<Droppable droppableId="trash">
+					{(provided) => {
+						return (
+							<TrashContainer
+								ref={provided.innerRef}
+								{...provided.innerRef}
+							/>
 						);
 					}}
 				</Droppable>

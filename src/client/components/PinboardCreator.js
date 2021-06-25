@@ -26,6 +26,28 @@ const BoardsContainer = styled.div`
 `;
 
 export default class PinboardCreator extends Component {
+	componentDidMount = () => {
+		if (!this.props.data) {
+			const board0 = {
+				id: 'board0',
+				title: 'Fresh Content',
+				contentIds: [0],
+			};
+			const boardOrder = ['board0'];
+			const initialState = {
+				data: {
+					content: {},
+					boards: {
+						[board0.id]: board0,
+					},
+					boardOrder,
+				},
+			};
+
+			this.props.updateBoards(initialState);
+		}
+	};
+
 	handleDragEnd = (result) => {
 		const { destination, source, draggableId, type } = result;
 
@@ -38,15 +60,22 @@ export default class PinboardCreator extends Component {
 			return;
 
 		// Dragging from New Content Droppable (board0)
-		if (source.droppableId === 'new-content-droppable') {
+		if (source.droppableId === 'new-content') {
 			console.log('INDISDE');
 
 			return;
 		}
 
 		// Dragging into New Content Droppable (board0)
-		if (destination.droppableId === 'new-content-droppable') {
+		if (destination.droppableId === 'new-content') {
 			console.log(draggableId);
+			return;
+		}
+
+		// Trash
+		if (destination.droppableId === 'trash') {
+			this.deleteContent(draggableId);
+			console.log('tras');
 			return;
 		}
 
@@ -199,9 +228,32 @@ export default class PinboardCreator extends Component {
 		this.props.updateBoards(newState);
 	};
 
+	deleteContent = (draggableId) => {
+		console.log(draggableId);
+		// remove from content list
+		// const newContent = Array.from(this.props.data.content);
+		const newContent = Object.entries(this.props.data.content);
+		console.log(newContent);
+
+		const { content } = this.props.data;
+		console.log(content);
+
+		content[draggableId] = '';
+
+		console.log(content);
+
+		const newState = {
+			...this.props,
+			data: { ...this.props.data, content },
+		};
+
+		this.props.updateBoards(newState);
+
+		// remove from board: contentIds
+	};
+
 	render() {
 		const { profileObj, data } = this.props;
-		const { board0 } = data.boards;
 
 		if (data) {
 			return (
@@ -223,7 +275,7 @@ export default class PinboardCreator extends Component {
 										createContent={this.createContent}
 									/>
 									<NewContentContainer
-										board0={board0}
+										board0={data.boards.board0}
 										content={data.content}
 									></NewContentContainer>
 									<BoardsContainer
@@ -235,13 +287,17 @@ export default class PinboardCreator extends Component {
 											(boardId, index) => {
 												const board =
 													data.boards[boardId];
-												const content =
-													board.contentIds.map(
-														(contentId) =>
-															data.content[
-																contentId
-															]
-													);
+
+												let content = '';
+												if (data.content) {
+													content =
+														board.contentIds.map(
+															(contentId) =>
+																data.content[
+																	contentId
+																]
+														);
+												}
 
 												if (boardId !== 'board0') {
 													return (
