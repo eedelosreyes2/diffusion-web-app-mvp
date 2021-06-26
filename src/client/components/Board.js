@@ -20,9 +20,7 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	margin: 5px;
-	padding: 0 5px 5px 5px;
 	position: relative;
-	// width 300px;
 `;
 
 const Handle = styled.div`
@@ -53,8 +51,7 @@ const Title = styled.div`
 const CardsContainer = styled.div`
 	border-radius: 15px;
 	height: 100%;
-	margin: 0 auto 10px auto;
-	width: 100%;
+	margin: 5px auto;
 `;
 
 const Footer = styled.div`

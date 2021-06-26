@@ -20,14 +20,14 @@ const CardsContainer = styled.div`
 	overflow: auto;
 `;
 
-const TrashContainer = styled.div`
-	background-color: ${(props) => (props.isDraggingOver ? 'red' : 'white')};
-	border: 2px solid red;
-	border-radius: 15px;
-	margin: 0 5px;
-	height: 100%;
-	min-width: 200px;
-`;
+// const TrashContainer = styled.div`
+// 	background-color: ${(props) => (props.isDraggingOver ? 'red' : 'white')};
+// 	border: 2px solid red;
+// 	border-radius: 15px;
+// 	margin: 0 5px;
+// 	height: 90%;
+// 	min-width: 200px;
+// `;
 
 export default class NewContentContainer extends Component {
 	render() {
@@ -64,7 +64,7 @@ export default class NewContentContainer extends Component {
 						);
 					}}
 				</Droppable>
-				<Droppable droppableId="trash">
+				{/* <Droppable droppableId="trash">
 					{(provided, snapshot) => {
 						return (
 							<TrashContainer
@@ -74,7 +74,7 @@ export default class NewContentContainer extends Component {
 							/>
 						);
 					}}
-				</Droppable>
+				</Droppable> */}
 			</Container>
 		);
 	}

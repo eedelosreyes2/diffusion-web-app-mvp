@@ -12,7 +12,7 @@ const Container = styled.div`
 	height: 100vh;
 	margin: auto;
 	overflow: auto;
-	width: 90%;
+	width: 95%;
 `;
 
 const InnerContainer = styled.div`
@@ -237,28 +237,35 @@ export default class PinboardCreator extends Component {
 	};
 
 	deleteContent = (draggableId, start, source) => {
-		const { content } = this.props.data;
-		content[draggableId] = '';
+		if (
+			confirm(
+				`Are you sure you want to delete content from ${this.props.data.content[draggableId].url} ?`
+			)
+		) {
+			// TODO: fix url
+			const { content } = this.props.data;
+			content[draggableId] = '';
 
-		const startContentIds = Array.from(start.contentIds);
-		startContentIds.splice(source.index, 1);
-		const newStart = {
-			...start,
-			contentIds: startContentIds,
-		};
+			const startContentIds = Array.from(start.contentIds);
+			startContentIds.splice(source.index, 1);
+			const newStart = {
+				...start,
+				contentIds: startContentIds,
+			};
 
-		const newState = {
-			...this.props,
-			data: {
-				...this.props.data,
-				boards: {
-					...this.props.data.boards,
-					[newStart.id]: newStart,
+			const newState = {
+				...this.props,
+				data: {
+					...this.props.data,
+					boards: {
+						...this.props.data.boards,
+						[newStart.id]: newStart,
+					},
 				},
-			},
-		};
+			};
 
-		this.props.updateBoards(newState);
+			this.props.updateBoards(newState);
+		}
 	};
 
 	render() {
