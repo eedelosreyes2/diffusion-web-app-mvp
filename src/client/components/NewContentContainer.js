@@ -11,7 +11,7 @@ const Container = styled.div`
 	// border-radius: 15px;
 	// border-bottom: 2px solid ${colors.secondary};
 	display: flex;
-	justify-content: space-between;
+	// justify-content: space-between;
 	margin: 0 auto 10px auto;
 	padding: 10px 5px;
 	width: 99%;
@@ -31,7 +31,7 @@ const TrashContainer = styled.div`
 	// height: 100%;
 	margin: 0 5px;
 	min-height: 100px;
-	width: 200px;
+	min-width: 200px;
 `;
 
 export default class NewContentContainer extends Component {

@@ -8,21 +8,17 @@ import styled from 'styled-components';
 
 const Container = styled.div`
 	display: flex;
-	height: 100vh;
-	justify-content: center;
-`;
-
-const HeaderAndBoardsContainer = styled.div`
-	display: flex;
 	flex-direction: column;
-	overflow: auto;
+	height: 100vh;
+	margin: auto;
+	width: 90%;
 `;
 
 const BoardsContainer = styled.div`
 	display: flex;
 	margin: 0 auto;
 	overflow: auto;
-	width: 100%;
+	min-width: 100%;
 `;
 
 export default class PinboardCreator extends Component {
@@ -93,7 +89,7 @@ export default class PinboardCreator extends Component {
 			finish.contentIds.length > 5 &&
 			destination.droppableId !== 'board0'
 		) {
-			// alert('You can only have up to 5 pieces of Content in a Board!');
+			alert('You can only have up to 5 pieces of Content in a Board!');
 			return;
 		}
 
@@ -218,7 +214,7 @@ export default class PinboardCreator extends Component {
 		};
 		const board0 = {
 			...this.props.data.boards.board0,
-			contentIds: [...this.props.data.boards.board0.contentIds, id],
+			contentIds: [id, ...this.props.data.boards.board0.contentIds],
 		};
 		const boards = {
 			...this.props.data.boards,
@@ -273,59 +269,51 @@ export default class PinboardCreator extends Component {
 					>
 						{(provided) => (
 							<Container>
-								<HeaderAndBoardsContainer>
-									<Header
-										profileObj={profileObj}
-										responseGoogleLogout={
-											this.props.responseGoogleLogout
+								<Header
+									profileObj={profileObj}
+									responseGoogleLogout={
+										this.props.responseGoogleLogout
+									}
+									createBoard={this.createBoard}
+									createContent={this.createContent}
+								/>
+								<NewContentContainer
+									board0={data.boards.board0}
+									content={data.content}
+								></NewContentContainer>
+								<BoardsContainer
+									className="hidden-scroll"
+									ref={provided.innerRef}
+									{...provided.innerRef}
+								>
+									{data.boardOrder.map((boardId, index) => {
+										const board = data.boards[boardId];
+
+										let content = '';
+										if (data.content) {
+											content = board.contentIds.map(
+												(contentId) =>
+													data.content[contentId]
+											);
 										}
-										createBoard={this.createBoard}
-										createContent={this.createContent}
-									/>
-									<NewContentContainer
-										board0={data.boards.board0}
-										content={data.content}
-									></NewContentContainer>
-									<BoardsContainer
-										className="hidden-scroll"
-										ref={provided.innerRef}
-										{...provided.innerRef}
-									>
-										{data.boardOrder.map(
-											(boardId, index) => {
-												const board =
-													data.boards[boardId];
 
-												let content = '';
-												if (data.content) {
-													content =
-														board.contentIds.map(
-															(contentId) =>
-																data.content[
-																	contentId
-																]
-														);
-												}
-
-												if (boardId !== 'board0') {
-													return (
-														<Board
-															index={index}
-															key={board.id}
-															board={board}
-															content={content}
-															deleteBoard={
-																this.deleteBoard
-															}
-														/>
-													);
-												}
-												return '';
-											}
-										)}
-										{provided.placeholder}
-									</BoardsContainer>
-								</HeaderAndBoardsContainer>
+										if (boardId !== 'board0') {
+											return (
+												<Board
+													index={index}
+													key={board.id}
+													board={board}
+													content={content}
+													deleteBoard={
+														this.deleteBoard
+													}
+												/>
+											);
+										}
+										return '';
+									})}
+									{provided.placeholder}
+								</BoardsContainer>
 							</Container>
 						)}
 					</Droppable>

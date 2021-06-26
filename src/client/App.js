@@ -13,7 +13,7 @@ export default class App extends Component {
 		this.getCache();
 		window.addEventListener('load', this.getCache);
 		window.addEventListener('beforeunload', this.setCache);
-		setInterval(() => this.fetchNewBoards(), 1000);
+		setInterval(() => this.fetchNewContent(), 1000);
 	};
 
 	componentWillUnmount = () => {
@@ -65,7 +65,7 @@ export default class App extends Component {
 		}
 	};
 
-	fetchNewBoards = async () => {
+	fetchNewContent = async () => {
 		let url = DB_URL + this.state.username + '/data/newContent.json';
 
 		axios.get(url).then((res) => {
@@ -87,8 +87,8 @@ export default class App extends Component {
 					const board0 = {
 						...this.state.data.boards.board0,
 						contentIds: [
-							...this.state.data.boards.board0.contentIds,
 							id,
+							...this.state.data.boards.board0.contentIds,
 						],
 					};
 					const boards = {
