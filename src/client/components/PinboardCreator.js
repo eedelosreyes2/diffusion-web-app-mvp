@@ -59,7 +59,7 @@ export default class PinboardCreator extends Component {
 		)
 			return;
 
-		// Dragging Boards
+		// BOARDS
 		if (type === 'board') {
 			const newBoardOrder = Array.from(this.props.data.boardOrder);
 			newBoardOrder.splice(source.index, 1);
@@ -77,17 +77,22 @@ export default class PinboardCreator extends Component {
 			return;
 		}
 
-		// Dragging Content into Trash
-		if (destination.droppableId === 'trash') {
-			this.deleteContent(draggableId, source);
-			return;
-		}
-
+		// CONTENT
 		const start = this.props.data.boards[source.droppableId]; // Start Board
 		const finish = this.props.data.boards[destination.droppableId]; // Finish Board
 
+		// Dragging Content into Trash
+		if (destination.droppableId === 'trash') {
+			this.deleteContent(draggableId, start, source);
+			return;
+		}
+
 		// If more than 5 in finish board, do not drop Content
-		if (start !== finish && finish.contentIds.length > 5) {
+		if (
+			start !== finish &&
+			finish.contentIds.length > 5 &&
+			destination.droppableId !== 'board0'
+		) {
 			// alert('You can only have up to 5 pieces of Content in a Board!');
 			return;
 		}
@@ -212,15 +217,26 @@ export default class PinboardCreator extends Component {
 		this.props.updateBoards(newState);
 	};
 
-	deleteContent = (draggableId, source) => {
+	deleteContent = (draggableId, start, source) => {
 		const { content } = this.props.data;
 		content[draggableId] = '';
 
-		// remove from contentIds from board PLS
+		const startContentIds = Array.from(start.contentIds);
+		startContentIds.splice(source.index, 1);
+		const newStart = {
+			...start,
+			contentIds: startContentIds,
+		};
 
 		const newState = {
 			...this.props,
-			data: { ...this.props.data, content },
+			data: {
+				...this.props.data,
+				boards: {
+					...this.props.data.boards,
+					[newStart.id]: newStart,
+				},
+			},
 		};
 
 		this.props.updateBoards(newState);

@@ -9,7 +9,7 @@ const Container = styled.div`
 	background-color: white;
 	// border: 2px solid black;
 	// border-radius: 15px;
-	border-bottom: 2px solid ${colors.secondary};
+	// border-bottom: 2px solid ${colors.secondary};
 	display: flex;
 	justify-content: space-between;
 	margin: 0 auto 10px auto;
@@ -21,6 +21,7 @@ const CardsContainer = styled.div`
 	display: flex;
 	flex-grow: 1;
 	min-height: 100px;
+	overflow: auto;
 `;
 
 const TrashContainer = styled.div`
@@ -48,6 +49,7 @@ export default class NewContentContainer extends Component {
 					{(provided) => {
 						return (
 							<CardsContainer
+								className="hidden-scroll"
 								ref={provided.innerRef}
 								{...provided.innerRef}
 							>
