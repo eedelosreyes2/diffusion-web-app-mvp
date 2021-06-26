@@ -9,7 +9,7 @@ const Container = styled.div`
 	border-radius: 5px;
 	margin: 5px;
 	min-height: 50px;
-	min-width: 250px;
+	width: 250px;
 `;
 
 const Url = styled.div`

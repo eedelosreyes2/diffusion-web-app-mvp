@@ -11,14 +11,19 @@ const Container = styled.div`
 	flex-direction: column;
 	height: 100vh;
 	margin: auto;
+	overflow: auto;
 	width: 90%;
+`;
+
+const InnerContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	overflow: auto;
 `;
 
 const BoardsContainer = styled.div`
 	display: flex;
 	margin: 0 auto;
-	overflow: auto;
-	min-width: 100%;
 `;
 
 export default class PinboardCreator extends Component {
@@ -281,39 +286,46 @@ export default class PinboardCreator extends Component {
 									board0={data.boards.board0}
 									content={data.content}
 								></NewContentContainer>
-								<BoardsContainer
-									className="hidden-scroll"
-									ref={provided.innerRef}
-									{...provided.innerRef}
-								>
-									{data.boardOrder.map((boardId, index) => {
-										const board = data.boards[boardId];
+								<InnerContainer className="hidden-scroll">
+									<BoardsContainer
+										ref={provided.innerRef}
+										{...provided.innerRef}
+									>
+										{data.boardOrder.map(
+											(boardId, index) => {
+												const board =
+													data.boards[boardId];
 
-										let content = '';
-										if (data.content) {
-											content = board.contentIds.map(
-												(contentId) =>
-													data.content[contentId]
-											);
-										}
+												let content = '';
+												if (data.content) {
+													content =
+														board.contentIds.map(
+															(contentId) =>
+																data.content[
+																	contentId
+																]
+														);
+												}
 
-										if (boardId !== 'board0') {
-											return (
-												<Board
-													index={index}
-													key={board.id}
-													board={board}
-													content={content}
-													deleteBoard={
-														this.deleteBoard
-													}
-												/>
-											);
-										}
-										return '';
-									})}
-									{provided.placeholder}
-								</BoardsContainer>
+												if (boardId !== 'board0') {
+													return (
+														<Board
+															index={index}
+															key={board.id}
+															board={board}
+															content={content}
+															deleteBoard={
+																this.deleteBoard
+															}
+														/>
+													);
+												}
+												return '';
+											}
+										)}
+										{provided.placeholder}
+									</BoardsContainer>
+								</InnerContainer>
 							</Container>
 						)}
 					</Droppable>

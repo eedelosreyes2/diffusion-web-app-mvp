@@ -22,7 +22,7 @@ const Container = styled.div`
 	margin: 5px;
 	padding: 0 5px 5px 5px;
 	position: relative;
-	width 300px;
+	// width 300px;
 `;
 
 const Handle = styled.div`
@@ -51,11 +51,8 @@ const Title = styled.div`
 `;
 
 const CardsContainer = styled.div`
-	align-items: center;
 	border-radius: 15px;
-	display: flex;
-	flex-direction: column;
-	flex-grow: 1;
+	height: 100%;
 	margin: 0 auto 10px auto;
 	width: 100%;
 `;
