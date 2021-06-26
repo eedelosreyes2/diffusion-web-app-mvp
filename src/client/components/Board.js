@@ -138,7 +138,7 @@ export class Board extends Component {
 								>
 									<FiTrash
 										onClick={() =>
-											this.props.deleteBoard(id)
+											this.props.deleteBoard(id, title)
 										}
 									/>
 								</IconContext.Provider>

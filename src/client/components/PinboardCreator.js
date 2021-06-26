@@ -179,8 +179,26 @@ export default class PinboardCreator extends Component {
 		this.props.updateBoards(newState);
 	};
 
-	deleteBoard = (boardId) => {
-		console.log(boardId);
+	deleteBoard = (boardId, boardTitle) => {
+		if (
+			confirm(
+				`Are you sure you want to delete ${boardTitle} along with all of its content?`
+			)
+		) {
+			const newBoardOrder = Array.from(this.props.data.boardOrder).filter(
+				(e) => e !== boardId
+			);
+
+			const newState = {
+				...this.props,
+				data: {
+					...this.props.data,
+					boardOrder: newBoardOrder,
+				},
+			};
+
+			this.props.updateBoards(newState);
+		}
 	};
 
 	createContent = () => {
