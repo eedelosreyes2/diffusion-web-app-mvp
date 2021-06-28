@@ -2,32 +2,20 @@ import React, { Component } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import Card from './Card';
 import styled from 'styled-components';
-import { colors } from '../../theme';
 
 const Container = styled.div`
-	align-items: center;
-	background-color: white;
-	display: flex;
 	margin: 0 auto 10px auto;
-	padding: 10px 5px;
-	width: 99%;
+	width: 100%;
 `;
 
 const CardsContainer = styled.div`
+	background-color: red;
 	display: flex;
 	flex-grow: 1;
+	justify-content: left;
 	min-height: 100px;
 	overflow: auto;
 `;
-
-// const TrashContainer = styled.div`
-// 	background-color: ${(props) => (props.isDraggingOver ? 'red' : 'white')};
-// 	border: 2px solid red;
-// 	border-radius: 15px;
-// 	margin: 0 5px;
-// 	height: 90%;
-// 	min-width: 200px;
-// `;
 
 export default class NewContentContainer extends Component {
 	render() {
@@ -64,17 +52,6 @@ export default class NewContentContainer extends Component {
 						);
 					}}
 				</Droppable>
-				{/* <Droppable droppableId="trash">
-					{(provided, snapshot) => {
-						return (
-							<TrashContainer
-								ref={provided.innerRef}
-								{...provided.innerRef}
-								isDraggingOver={snapshot.isDraggingOver}
-							/>
-						);
-					}}
-				</Droppable> */}
 			</Container>
 		);
 	}

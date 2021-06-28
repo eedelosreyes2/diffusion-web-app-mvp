@@ -8,9 +8,8 @@ import { colors } from '../../theme';
 
 const Container = styled.div`
 	display: flex;
-	height: 10vh;
-	margin: 0 auto;
-	width: 99%;
+	height: 100px;
+	width: 100%;
 `;
 
 const H1 = styled.h1`

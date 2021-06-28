@@ -7,6 +7,7 @@ import Board from './Board';
 import styled from 'styled-components';
 
 const Container = styled.div`
+	background-color: yellow;
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
@@ -16,13 +17,12 @@ const Container = styled.div`
 `;
 
 const InnerContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	overflow: auto;
+	background-color: red;
 `;
 
 const BoardsContainer = styled.div`
 	display: flex;
+	justify-content: left;
 	margin: 0 auto;
 `;
 
@@ -242,7 +242,6 @@ export default class PinboardCreator extends Component {
 				`Are you sure you want to delete content from ${this.props.data.content[draggableId].url} ?`
 			)
 		) {
-			// TODO: fix url
 			const { content } = this.props.data;
 			content[draggableId] = '';
 

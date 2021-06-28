@@ -50,6 +50,7 @@ const Title = styled.div`
 
 const CardsContainer = styled.div`
 	border-radius: 15px;
+	display: grid;
 	height: 100%;
 	margin: 5px auto;
 `;
