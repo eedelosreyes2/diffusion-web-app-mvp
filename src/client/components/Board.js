@@ -50,7 +50,8 @@ const Title = styled.div`
 
 const CardsContainer = styled.div`
 	border-radius: 15px;
-	display: grid;
+	display: flex;
+	flex-direction: column;
 	height: 100%;
 	margin: 5px auto;
 `;
