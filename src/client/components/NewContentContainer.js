@@ -9,7 +9,6 @@ const Container = styled.div`
 `;
 
 const CardsContainer = styled.div`
-	background-color: red;
 	display: flex;
 	flex-grow: 1;
 	justify-content: left;

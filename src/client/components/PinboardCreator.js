@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import NewContentContainer from './NewContentContainer';
 import Header from './Header';
-import Board from './Board';
+import NewContentContainer from './NewContentContainer';
+import Boards from './Boards';
 import styled from 'styled-components';
 
 const Container = styled.div`
-	background-color: yellow;
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
@@ -16,14 +15,13 @@ const Container = styled.div`
 	width: 95%;
 `;
 
-const InnerContainer = styled.div`
-	background-color: red;
-`;
+const ScrollContainer = styled.div``;
 
 const BoardsContainer = styled.div`
 	display: flex;
 	justify-content: left;
 	margin: 0 auto;
+	overflow: auto;
 `;
 
 export default class PinboardCreator extends Component {
@@ -292,46 +290,19 @@ export default class PinboardCreator extends Component {
 									board0={data.boards.board0}
 									content={data.content}
 								></NewContentContainer>
-								<InnerContainer className="hidden-scroll">
+								<ScrollContainer>
 									<BoardsContainer
+										className="hidden-scroll"
 										ref={provided.innerRef}
 										{...provided.innerRef}
 									>
-										{data.boardOrder.map(
-											(boardId, index) => {
-												const board =
-													data.boards[boardId];
-
-												let content = '';
-												if (data.content) {
-													content =
-														board.contentIds.map(
-															(contentId) =>
-																data.content[
-																	contentId
-																]
-														);
-												}
-
-												if (boardId !== 'board0') {
-													return (
-														<Board
-															index={index}
-															key={board.id}
-															board={board}
-															content={content}
-															deleteBoard={
-																this.deleteBoard
-															}
-														/>
-													);
-												}
-												return '';
-											}
-										)}
+										<Boards
+											data={data}
+											deleteBoard={this.deleteBoard}
+										/>
 										{provided.placeholder}
 									</BoardsContainer>
-								</InnerContainer>
+								</ScrollContainer>
 							</Container>
 						)}
 					</Droppable>
