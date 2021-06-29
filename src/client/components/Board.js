@@ -54,6 +54,16 @@ const CardsContainer = styled.div`
 	flex-direction: column;
 	height: 100%;
 	margin: 5px auto;
+	max-width: 262px;
+	min-width: 262px;
+`;
+
+const StoryContainer = styled.div`
+	display: flex;
+	height: 100%;
+	margin: 5px auto;
+	max-width: 262px;
+	min-width: 262px;
 `;
 
 const Footer = styled.div`
@@ -70,6 +80,17 @@ const Footer = styled.div`
 `;
 
 export class Board extends Component {
+	constructor() {
+		super();
+		this.state = {
+			isFlipped: false,
+		};
+	}
+
+	handleFlip = () => {
+		this.setState((prevState) => ({ isFlipped: !prevState.isFlipped }));
+	};
+
 	render() {
 		const { id, title } = this.props.board;
 
@@ -90,31 +111,12 @@ export class Board extends Component {
 									<HiOutlineDotsHorizontal />
 								</IconContext.Provider>
 							</Handle>
-							<Title>{title}</Title>
-							<Droppable droppableId={id}>
-								{(provided) => {
-									return (
-										<CardsContainer
-											ref={provided.innerRef}
-											{...provided.droppableProps}
-										>
-											{this.props.content.map(
-												(content, index) =>
-													content ? (
-														<Card
-															key={content.id}
-															content={content}
-															index={index}
-														/>
-													) : (
-														''
-													)
-											)}
-											{provided.placeholder}
-										</CardsContainer>
-									);
-								}}
-							</Droppable>
+							<Title contentEditable>{title}</Title>
+							{this.state.isFlipped ? (
+								<Back />
+							) : (
+								<Front id={id} content={this.props.content} />
+							)}
 							<Footer boardId={id}>
 								<IconContext.Provider
 									value={{ style: { cursor: 'pointer' } }}
@@ -127,7 +129,9 @@ export class Board extends Component {
 										style: { cursor: 'pointer' },
 									}}
 								>
-									<BsArrowClockwise />
+									<BsArrowClockwise
+										onClick={this.handleFlip}
+									/>
 								</IconContext.Provider>
 								<IconContext.Provider
 									value={{ style: { cursor: 'pointer' } }}
@@ -148,3 +152,41 @@ export class Board extends Component {
 }
 
 export default Board;
+
+class Front extends Component {
+	render() {
+		const { id, content } = this.props;
+
+		return (
+			<Droppable droppableId={id}>
+				{(provided) => {
+					return (
+						<CardsContainer
+							ref={provided.innerRef}
+							{...provided.droppableProps}
+						>
+							{content.map((content, index) =>
+								content ? (
+									<Card
+										key={content.id}
+										content={content}
+										index={index}
+									/>
+								) : (
+									''
+								)
+							)}
+							{provided.placeholder}
+						</CardsContainer>
+					);
+				}}
+			</Droppable>
+		);
+	}
+}
+
+class Back extends Component {
+	render() {
+		return <StoryContainer>YEAHH</StoryContainer>;
+	}
+}

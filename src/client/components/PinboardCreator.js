@@ -277,7 +277,7 @@ export default class PinboardCreator extends Component {
 						type="board"
 					>
 						{(provided) => (
-							<Container>
+							<Container className="hidden-scroll">
 								<Header
 									profileObj={profileObj}
 									responseGoogleLogout={
