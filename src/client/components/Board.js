@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import ContentEditable from 'react-contenteditable';
 import styled from 'styled-components';
 import { colors } from '../../theme';
 import Card from './Card';
 import { IconContext } from 'react-icons/lib';
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
-import { FiEdit2, FiTrash } from 'react-icons/fi';
+import { FiTrash, FiShare } from 'react-icons/fi';
 import { BsArrowClockwise } from 'react-icons/bs';
 
 const Container = styled.div`
@@ -66,7 +67,13 @@ const StoryContainer = styled.div`
 	min-width: 262px;
 `;
 
-const Footer = styled.div`
+const Story = styled.div`
+	height: 75%;
+	padding: 25px 5px;
+	text-align: center;
+`;
+
+const FooterContainer = styled.div`
 	align-items: center;
 	bottom: 0;
 	color: 'black';
@@ -83,16 +90,35 @@ export class Board extends Component {
 	constructor() {
 		super();
 		this.state = {
+			title: '',
+			story: '',
 			isFlipped: false,
 		};
 	}
+
+	componentDidMount = () => {
+		let { story } = this.props;
+		if (!story) {
+			story = 'Click here to add a story to this board!';
+		}
+
+		this.setState({ title: this.props.board.title, story });
+	};
+
+	handleContentEditable = (e) => {
+		if (e.currentTarget.id === 'title') {
+			this.setState({ title: e.currentTarget.innerHTML });
+		} else {
+			this.setState({ story: e.currentTarget.innerHTML });
+		}
+	};
 
 	handleFlip = () => {
 		this.setState((prevState) => ({ isFlipped: !prevState.isFlipped }));
 	};
 
 	render() {
-		const { id, title } = this.props.board;
+		const { id, title, story } = this.props.board;
 
 		return (
 			<Draggable draggableId={id} index={this.props.index}>
@@ -111,38 +137,34 @@ export class Board extends Component {
 									<HiOutlineDotsHorizontal />
 								</IconContext.Provider>
 							</Handle>
-							<Title contentEditable>{title}</Title>
+
+							<Title>
+								<ContentEditable
+									id="title"
+									html={this.state.title}
+									onChange={this.handleContentEditable}
+									disabled={false}
+								/>
+							</Title>
+
 							{this.state.isFlipped ? (
-								<Back />
+								<Back
+									story={this.state.story}
+									handleContentEditable={
+										this.handleContentEditable
+									}
+								/>
 							) : (
 								<Front id={id} content={this.props.content} />
 							)}
-							<Footer boardId={id}>
-								<IconContext.Provider
-									value={{ style: { cursor: 'pointer' } }}
-								>
-									<FiEdit2 />
-								</IconContext.Provider>
-								<IconContext.Provider
-									value={{
-										size: '2em',
-										style: { cursor: 'pointer' },
-									}}
-								>
-									<BsArrowClockwise
-										onClick={this.handleFlip}
-									/>
-								</IconContext.Provider>
-								<IconContext.Provider
-									value={{ style: { cursor: 'pointer' } }}
-								>
-									<FiTrash
-										onClick={() =>
-											this.props.deleteBoard(id, title)
-										}
-									/>
-								</IconContext.Provider>
-							</Footer>
+
+							<Footer
+								id={id}
+								title={title}
+								isFlipped={this.state.isFlipped}
+								handleFlip={this.handleFlip}
+								deleteBoard={this.props.deleteBoard}
+							/>
 						</Container>
 					);
 				}}
@@ -187,6 +209,50 @@ class Front extends Component {
 
 class Back extends Component {
 	render() {
-		return <StoryContainer>YEAHH</StoryContainer>;
+		const { story } = this.props;
+
+		return (
+			<StoryContainer>
+				<Story>
+					<ContentEditable
+						id="story"
+						html={this.props.story}
+						onChange={this.props.handleContentEditable}
+						disabled={false}
+					/>
+				</Story>
+			</StoryContainer>
+		);
+	}
+}
+
+class Footer extends Component {
+	render() {
+		const { id, title, isFlipped } = this.props;
+		const flipIconStyle = {
+			cursor: 'pointer',
+			transform: isFlipped ? 'scaleX(-1)' : '',
+		};
+
+		return (
+			<FooterContainer boardId={id}>
+				<IconContext.Provider value={{ style: { cursor: 'pointer' } }}>
+					<FiTrash
+						onClick={() => this.props.deleteBoard(id, title)}
+					/>
+				</IconContext.Provider>
+				<IconContext.Provider
+					value={{
+						size: '2em',
+						style: flipIconStyle,
+					}}
+				>
+					<BsArrowClockwise onClick={this.props.handleFlip} />
+				</IconContext.Provider>
+				<IconContext.Provider value={{ style: { cursor: 'pointer' } }}>
+					<FiShare />
+				</IconContext.Provider>
+			</FooterContainer>
+		);
 	}
 }
