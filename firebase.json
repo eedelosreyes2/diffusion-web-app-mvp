@@ -1,0 +1,25 @@
+{
+  "hosting": {
+    "public": "build/diffusion-web-app-mvp",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/timestamp",
+        "function": "app"
+      }
+    ]
+  },
+  "functions": {
+    "predeploy": [
+      "npm --prefix \"$RESOURCE_DIR\" run lint"
+    ]
+  }
+}
