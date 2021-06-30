@@ -187,17 +187,19 @@ class Front extends Component {
 							ref={provided.innerRef}
 							{...provided.droppableProps}
 						>
-							{content.map((content, index) =>
-								content ? (
-									<Card
-										key={content.id}
-										content={content}
-										index={index}
-									/>
-								) : (
-									''
-								)
-							)}
+							{content
+								? content.map((content, index) =>
+										content ? (
+											<Card
+												key={content.id}
+												content={content}
+												index={index}
+											/>
+										) : (
+											''
+										)
+								  )
+								: ''}
 							{provided.placeholder}
 						</CardsContainer>
 					);
